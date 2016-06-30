@@ -155,7 +155,7 @@ if (rex::isBackend() && rex::getUser()) {
 
         if (rex::getUser()->isAdmin() || rex::getUser()->hasPerm('sprog[wildcard]')) {
             $page = \rex_be_controller::getPageObject('sprog/wildcard');
-
+            
             if (Wildcard::isClangSwitchMode()) {
                 $clang_id = str_replace('clang', '', rex_be_controller::getCurrentPagePart(3));
                 $page->setSubPath(rex_path::addon('sprog', 'pages/wildcard.clang_switch.php'));

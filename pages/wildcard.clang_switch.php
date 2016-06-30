@@ -35,10 +35,20 @@ if ($func == 'delete' && $wildcard_id > 0) {
 }
 
 if ($func == '') {
+    $searchTerm = rex_request('search-term', 'string');
     $title = $this->i18n('wildcard_caption');
+    
+    if (strlen($searchTerm))
+    {
+        $search = " AND (`wildcard` LIKE '%". $searchTerm ."%' OR `replace` LIKE '%". $searchTerm ."%')";
+    }
 
-    $list = rex_list::factory('SELECT `pid`, `id`, `wildcard`, `replace` FROM ' . rex::getTable('sprog_wildcard') . ' WHERE `clang_id`="' . $clang_id . '" ORDER BY wildcard');
+    $list = rex_list::factory('SELECT `pid`, `id`, `wildcard`, `replace` FROM ' . rex::getTable('sprog_wildcard') . ' WHERE `clang_id`="' . $clang_id . '" '. $search .' ORDER BY wildcard');
     $list->addTableAttribute('class', 'table-striped');
+    
+    if (strlen($searchTerm)) {
+        $list->addParam('search-term', $searchTerm);
+    }
 
     $tdIcon = '<i class="rex-icon rex-icon-refresh"></i>';
     $thIcon = rex::getUser()->getComplexPerm('clang')->hasAll() ? '<a href="' . $list->getUrl(['func' => 'add']) . '#wildcard"' . rex::getAccesskey($this->i18n('add'), 'add') . '><i class="rex-icon rex-icon-add-article"></i></a>' : '';
@@ -64,12 +74,21 @@ if ($func == '') {
     $list->setColumnParams('delete', ['func' => 'delete', 'wildcard_id' => '###id###']);
     $list->addLinkAttribute('delete', 'data-confirm', $this->i18n('delete') . ' ?');
 
-    $content .= $list->get();
-
+    $formElements = '
+        <div class="panel-body form-group">
+            <label for="exampleInputName2">'. $this->i18n('wildcard_search_term') .'</label>
+            <input type="text" class="form-control text-right" name="search-term" value="'. $searchTerm .'"/>
+            <button type="submit" class="btn btn-primary">'. $this->i18n('search') .'</button>
+        </div>';
+    $fragment = new rex_fragment();
+    $fragment->setVar('title', $this->i18n('wildcard_search'));
+    $fragment->setVar('content', $formElements, false);
+    $content = '<form action="' . \rex_url::currentBackendPage() . '" method="post" class="form-inline">'. $fragment->parse('core/page/section.php') .'</form>';
+    
     $fragment = new rex_fragment();
     $fragment->setVar('title', $title);
-    $fragment->setVar('content', $content, false);
-    $content = $fragment->parse('core/page/section.php');
+    $fragment->setVar('content', $list->get(), false);
+    $content .= $fragment->parse('core/page/section.php');
 } else {
     $title = $func == 'edit' ? $this->i18n('edit') : $this->i18n('add');
 

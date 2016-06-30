@@ -13,3 +13,12 @@ page:
         settings:
             title: 'translate:settings'
             perm: admin[]
+        import:
+            title: 'translate:import'
+            perm: admin[]
+        export:
+            title: 'translate:export'
+            perm: admin[]
+        cleanup:
+            title: 'translate:cleanup'
+            perm: admin[]

@@ -15,6 +15,22 @@ sprog_settings_wildcard_close_tag = schließendes Tag
 sprog_settings_wildcard_open_tag = öffnendes Tag
 sprog_settings_synchronization = Synchronisierung
 
+sprog_import = Importieren
+sprog_import_csv_upload = CSV importieren
+sprog_upload = hochladen
+sprog_import_file_label = CSV Datei
+sprog_import_overwrite_wildcards = Bestehende Platzhalter überschreiben
+sprog_import_process = Importiere Platzhalter:
+sprog_import_lang_not_exists = "%s" wurde nicht gefunden!
+sprog_import_lang_importing = "%s" gefunden
+sprog_import_wildcard_added = "%s" wurde hinzugefügt
+sprog_import_wildcard_updated = "%s" wurde aktualisiert
+sprog_import_wildcard_deleted = "%s" wurde gelöscht
+sprog_search = Suchen
+
+sprog_export = Exportieren
+sprog_cleanup = Aufräumen
+
 sprog_settings_sync_metainfo = Meta Info
 sprog_settings_sync_metainfo_art = Artikel
 sprog_settings_sync_metainfo_cat = Kategorien
@@ -33,6 +49,8 @@ sprog_settings_wildcard_open_close_tag = öffnendes/schließendes Tag
 
 
 sprog_wildcard = Platzhalter
+sprog_wildcard_search = Suche
+sprog_wildcard_search_term = Suchbegriff
 sprog_wildcard_title = Platzhalter
 sprog_wildcard_add = Platzhalter hinzufügen
 sprog_wildcard_added = Platzhalter wurd hinzugefügt

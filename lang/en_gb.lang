@@ -15,6 +15,10 @@ sprog_settings_wildcard_close_tag = Closing tag
 sprog_settings_wildcard_open_tag = Opening tag
 sprog_settings_synchronization = Synchronisierung
 
+sprog_import = Import
+sprog_export = Export
+sprog_cleanup = Cleanup
+
 sprog_settings_sync_metainfo = Meta Info
 sprog_settings_sync_metainfo_art = Article
 sprog_settings_sync_metainfo_cat = Categories
