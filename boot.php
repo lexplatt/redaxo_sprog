@@ -172,4 +172,7 @@ if (rex::isBackend() && rex::getUser()) {
             }
         }
     });
+
+    // add JS resources
+    rex_view::addJsFile($this->getAssetsUrl('js/sprog.js'));
 }

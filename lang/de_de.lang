@@ -29,7 +29,17 @@ sprog_import_wildcard_deleted = "%s" wurde gelöscht
 sprog_search = Suchen
 
 sprog_export = Exportieren
+
 sprog_cleanup = Aufräumen
+sprog_cleanup_find_title = Unbenutzte Platzhalter
+sprog_cleanup_unused_count = %d unbenutzte Platzhalter gefunden
+sprog_cleanup_title = Unbenutzte Platzhalter entfernen
+sprog_cleanup_find_unused = Finde unbenutzte Platzhalter
+sprog_cleanup_remove_selected = Lösche alle ausgewählten
+sprog_cleanup_items_removed = %d Platzhalter gelöscht
+sprog_cleanup_select_all = Alle auswählen
+sprog_cleanup_unselect_all = Alle abwählen
+sprog_cleanup_info = Damit ist es möglich unbenutzte Platzhalter zu finden und aus der Datenbank zu entfernen.<br/>Die Einträge werden vor dem Löschen nochmals aufgelistet um manuell zu entscheiden welche Platzhalter definitv entfernt werden sollen.
 
 sprog_settings_sync_metainfo = Meta Info
 sprog_settings_sync_metainfo_art = Artikel

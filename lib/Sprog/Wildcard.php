@@ -4,6 +4,7 @@
  * This file is part of the Sprog package.
  *
  * @author (c) Thomas Blum <thomas@addoff.de>
+ * @author (c) Alex Platter <a.platter@kreatif.it>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -188,6 +189,94 @@ class Wildcard
                 }
             }
             return $wildcards;
+        }
+
+        return false;
+    }
+
+    public static function getUnusedWildcards()
+    {
+        $wildcards = [];
+        $unuseds   = [];
+
+        if (\rex_addon::get('structure')->isAvailable() && \rex_plugin::get('structure', 'content')->isAvailable()) {
+            $sql = \rex_sql::factory();
+
+            // Slices der Artikel durchsuchen
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            $fields = [
+                's.value' => range('1', '20'),
+            ];
+
+            $searchFields = [];
+            $selectFields = [];
+            foreach ($fields as $field => $numbers) {
+                $concatFields = [];
+                foreach ($numbers as $number) {
+                    $concatFields[] = $field . $number;
+                    $searchFields[] = $field . $number . ' RLIKE ' . $sql->escape(preg_quote(trim(self::getOpenTag())) . '.*' . preg_quote(trim(self::getCloseTag())));
+                }
+                // add module fields
+                $concatFields[] = 'm.output';
+                $searchFields[] = 'm.output RLIKE ' . $sql->escape(preg_quote(trim(self::getOpenTag())) . '.*' . preg_quote(trim(self::getCloseTag())));
+                // add template fields
+                $concatFields[] = 't.content';
+                $searchFields[] = 't.content RLIKE ' . $sql->escape(preg_quote(trim(self::getOpenTag())) . '.*' . preg_quote(trim(self::getCloseTag())));
+
+                $selectFields[] = 'CONCAT_WS("|", ' . implode(',', $concatFields) . ') AS subject';
+            }
+
+            $fields = $searchFields;
+
+            // find in article-slices
+            $sql_query = '
+                SELECT       
+                    ' . implode(', ', $selectFields) . '
+                FROM ' . \rex::getTable('article_slice') . ' AS s
+                RIGHT JOIN ' . \rex::getTable('template') . ' AS t ON 1
+                RIGHT JOIN ' . \rex::getTable('module') . ' AS m ON 1
+                WHERE
+                    '. implode(' OR ', $fields) . '
+            ';
+
+            $sql->setDebug(false);
+            $sql->setQuery($sql_query);
+
+            if ($sql->getRows() >= 1) {
+                $items = $sql->getArray();
+
+                foreach ($items as $item) {
+                    preg_match_all(self::getRegexp(), $item['subject'], $matchesSubject, PREG_SET_ORDER);
+
+                    foreach ($matchesSubject as $match) {
+                        $wildcard = str_replace([self::getOpenTag(), self::getCloseTag()], '', $match[0]);
+                        if (!in_array ($wildcard, $wildcards)) {
+                            $wildcards[] = $wildcard;
+                        }
+                    }
+                }
+            }
+
+            // Alle bereits angelegten Platzhalter entfernen
+            $sql = \rex_sql::factory();
+            $sql_query = '
+                SELECT DISTINCT(wildcard) as wildcard
+                FROM    ' . \rex::getTable('sprog_wildcard') . '
+                WHERE   
+                    clang_id = "' . \rex_clang::getStartId() . '"
+                    AND wildcard NOT IN("'. implode('","', $wildcards) .'")
+            ';
+
+            $sql->setDebug(false);
+            $sql->setQuery($sql_query);
+
+            if ($sql->getRows() >= 1) {
+                $items = $sql->getArray();
+                foreach ($items as $item) {
+                    $unuseds[] = $item['wildcard'];
+                }
+            }
+            return $unuseds;
         }
 
         return false;
