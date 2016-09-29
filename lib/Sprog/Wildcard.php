@@ -52,26 +52,17 @@ class Wildcard
             $clang_id = \rex_clang::getCurrentId();
         }
 
+        $clangBase = \rex_config::get('clang_base');
+        if (isset($clangBase[$clang_id])) {
+            $clang_id = $clangBase[$clang_id];
+        }
+
         $sql = \rex_sql::factory();
-        $sql->setQuery('SELECT `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = :clang_id AND `wildcard` = :wildcard', [':clang_id' => $clang_id, ':wildcard' => trim($wildcard)]);
+        $sql->setQuery('SELECT `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = :clang_id AND `wildcard` = :wildcard', ['clang_id' => $clang_id, 'wildcard' => trim($wildcard)]);
         if ($sql->getRows() == 1 && trim($sql->getValue('replace')) != '') {
-            return nl2br($sql->getValue('replace'));
+            return self::replace($wildcard, $sql->getValue('replace'));
         }
         return false;
-    }
-
-    /**
-     * Deprecated
-     * Returns the replaced wildcard.
-     *
-     * @param string $wildcard
-     * @param int    $clang_id
-     *
-     * @return string
-     */
-    public static function replace($content, $clang_id = null)
-    {
-        return self::get($content, $clang_id);
     }
 
     /**
@@ -92,8 +83,13 @@ class Wildcard
             $clang_id = \rex_clang::getCurrentId();
         }
 
+        $clangBase = \rex_config::get('clang_base');
+        if (isset($clangBase[$clang_id])) {
+            $clang_id = $clangBase[$clang_id];
+        }
+
         $sql = \rex_sql::factory();
-        $sql->setQuery('SELECT `wildcard`, `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = "' . $clang_id . '"');
+        $sql->setQuery('SELECT `wildcard`, `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = :clang_id', ['clang_id' => $clang_id]);
 
         $search = [];
         $replace = [];
@@ -101,10 +97,22 @@ class Wildcard
 
         for ($i = 1; $i <= $rows; $i++, $sql->next()) {
             $search[] = self::getRegexp($sql->getValue('wildcard'));
-            $replace[] = nl2br($sql->getValue('replace'));
+            $replace[] = self::replace($sql->getValue('wildcard'), $sql->getValue('replace'));
         }
 
         return preg_replace($search, $replace, $content);
+    }
+
+    /**
+     * Returns the replaced wildcard.
+     *
+     * @param string $wildcard
+     *
+     * @return string
+     */
+    protected static function replace($wildcard, $replace)
+    {
+        return nl2br($replace);
     }
 
     public static function getMissingWildcards()
@@ -154,16 +162,17 @@ class Wildcard
                     preg_match_all(self::getRegexp(), $item['subject'], $matchesSubject, PREG_SET_ORDER);
 
                     foreach ($matchesSubject as $match) {
-                        $wildcards[$match[0]]['wildcard'] = str_replace([self::getOpenTag(), self::getCloseTag()], '', $match[0]);
-                        $wildcards[$match[0]]['url'] = \rex_url::backendController(
-                                                            [
-                                                                  'page' => 'content/edit',
-                                                                  'article_id' => $item['id'],
-                                                                  'mode' => 'edit',
-                                                                  'clang' => $item['clang_id'],
-                                                                  'ctype' => $item['ctype_id'],
-                                                            ]
-                                                        );
+                        $cleanWildcard = trim(str_replace([trim(self::getOpenTag()), trim(self::getCloseTag())], '', $match[0]));
+                        $wildcards[$cleanWildcard]['wildcard'] = $cleanWildcard;
+                        $wildcards[$cleanWildcard]['url'] = \rex_url::backendController(
+                            [
+                                  'page' => 'content/edit',
+                                  'article_id' => $item['id'],
+                                  'mode' => 'edit',
+                                  'clang' => $item['clang_id'],
+                                  'ctype' => $item['ctype_id'],
+                            ]
+                        );
                     }
                 }
             }
@@ -172,7 +181,7 @@ class Wildcard
             if (count($wildcards)) {
                 $sql = \rex_sql::factory();
                 $sql_query = '
-                                SELECT  CONCAT("' . self::getOpenTag() . '", wildcard, "' . self::getCloseTag() . '") AS wildcard
+                                SELECT  wildcard
                                 FROM    ' . \rex::getTable('sprog_wildcard') . '
                                 WHERE   clang_id = "' . \rex_clang::getStartId() . '"';
 
@@ -182,8 +191,8 @@ class Wildcard
                 if ($sql->getRows() >= 1) {
                     $items = $sql->getArray();
                     foreach ($items as $item) {
-                        if (isset($wildcards[ $item['wildcard'] ])) {
-                            unset($wildcards[ $item['wildcard'] ]);
+                        if (isset($wildcards[$item['wildcard']])) {
+                            unset($wildcards[$item['wildcard']]);
                         }
                     }
                 }
@@ -304,7 +313,7 @@ class Wildcard
                            <tr>
                                <td class="rex-table-icon"><i class="rex-icon rex-icon-refresh"></i></td>
                                <td data-title="' . \rex_addon::get('sprog')->i18n('wildcard') . '">' . $name . '</td>
-                               <td class="rex-table-action"><a href="' . \rex_url::currentBackendPage(['func' => 'add', 'wildcard_name' => $params['wildcard']]) . '"><i class="rex-icon rex-icon-edit"></i> ' .  \rex_addon::get('sprog')->i18n('function_add') . '</a></td>
+                               <td class="rex-table-action"><a href="' . \rex_url::currentBackendPage(['func' => 'add', 'wildcard_name' => $params['wildcard']]) . '"><i class="rex-icon rex-icon-edit"></i> ' . \rex_addon::get('sprog')->i18n('function_add') . '</a></td>
                                <td class="rex-table-action"><a href="' . $params['url'] . '"><i class="rex-icon rex-icon-article"></i> ' . \rex_addon::get('sprog')->i18n('wildcard_go_to_the_article') . '</a></td>
                            </tr>';
             }
@@ -314,7 +323,7 @@ class Wildcard
                </table>';
 
             $fragment = new \rex_fragment();
-            $fragment->setVar('title',  \rex_addon::get('sprog')->i18n('wildcard_caption_missing',  \rex_addon::get('structure')->i18n('title_structure')), false);
+            $fragment->setVar('title', \rex_addon::get('sprog')->i18n('wildcard_caption_missing', \rex_addon::get('structure')->i18n('title_structure')), false);
             $fragment->setVar('content', $content, false);
             $content = $fragment->parse('core/page/section.php');
 

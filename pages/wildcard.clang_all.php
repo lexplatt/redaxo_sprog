@@ -4,6 +4,7 @@
  * This file is part of the Sprog package.
  *
  * @author (c) Thomas Blum <thomas@addoff.de>
+ * @author (c) Alex Platter <a.platter@kreatif.it>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,6 +21,7 @@ $wildcard_name = rex_request('wildcard_name', 'string');
 $wildcard_replaces = rex_request('wildcard_replaces', 'array');
 $search_term = rex_request('search-term', 'string');
 $func = rex_request('func', 'string');
+$search_term = rex_request('search-term', 'string');
 
 // -------------- Form Submits
 $add_wildcard_save = rex_post('add_wildcard_save', 'boolean');
@@ -28,8 +30,17 @@ $edit_wildcard_save = rex_post('edit_wildcard_save', 'boolean');
 $error = '';
 $success = '';
 
+$clangAll = \rex_clang::getAll();
+$clangBase = $this->getConfig('clang_base');
+// Alle Sprachen die eine andere Basis haben, nicht anzeigen lassen
+foreach ($clangAll as $clang) {
+    if (isset($clangBase[$clang->getId()]) && $clangBase[$clang->getId()] != $clang->getId()) {
+        unset($clangAll[$clang->getId()]);
+    }
+}
+
 // ----- delete wildcard
-if ($func == 'delete' && $wildcard_id > 0) {
+if ($func == 'delete' && $wildcard_id > 0 && rex::getUser()->isAdmin()) {
     $deleteWildcard = rex_sql::factory();
     $deleteWildcard->setQuery('DELETE FROM ' . rex::getTable('sprog_wildcard') . ' WHERE id=?', [$wildcard_id]);
     $success = $this->i18n('wildcard_deleted');
@@ -40,7 +51,7 @@ if ($func == 'delete' && $wildcard_id > 0) {
 
 // ----- add wildcard
 if ($add_wildcard_save || $edit_wildcard_save) {
-    if ($wildcard_name == '') {
+    if (($wildcard_name == '' && $add_wildcard_save) || (rex::getUser()->isAdmin() && $wildcard_name == '' && $edit_wildcard_save)) {
         $error = $this->i18n('wildcard_enter_wildcard');
         $func = $add_wildcard_save ? 'add' : 'edit';
     } elseif ($add_wildcard_save) {
@@ -76,7 +87,9 @@ if ($add_wildcard_save || $edit_wildcard_save) {
             if (isset($wildcard_replaces[$clang_id])) {
                 $editWildcard->setTable(rex::getTable('sprog_wildcard'));
                 $editWildcard->setWhere(['id' => $wildcard_id, 'clang_id' => $clang_id]);
-                $editWildcard->setValue('wildcard', $wildcard_name);
+                if (rex::getUser()->isAdmin()) {
+                    $editWildcard->setValue('wildcard', $wildcard_name);
+                }
                 $editWildcard->setValue('replace', $wildcard_replaces[$clang_id]);
                 $editWildcard->addGlobalUpdateFields();
                 $editWildcard->update();
@@ -109,10 +122,10 @@ echo '<form action="' . \rex_url::currentBackendPage() . '" method="post" class=
 
 $th = '';
 $td_add = '';
-foreach (rex_clang::getAll() as $clang_id => $clang) {
-    if (rex::getUser()->getComplexPerm('clang')->hasPerm($clang_id)) {
+foreach ($clangAll as $clang_id => $clang) {
+    if (rex::getUser()->getComplexPerm('clang')->hasPerm($clang->getId())) {
         $th .= '<th>' . $clang->getName() . '</th>';
-        $td_add .= '<td data-title="' . $clang->getName() . '"><textarea class="form-control" name="wildcard_replaces[' . $clang_id . ']" rows="6">' . (isset($wildcard_replaces[$clang_id]) ? htmlspecialchars($wildcard_replaces[$clang_id]) : '') . '</textarea></td>';
+        $td_add .= '<td data-title="' . $clang->getName() . '"><textarea class="form-control" name="wildcard_replaces[' . $clang->getId() . ']" rows="6">' . (isset($wildcard_replaces[$clang->getId()]) ? htmlspecialchars($wildcard_replaces[$clang->getId()]) : '') . '</textarea></td>';
     }
 }
 
@@ -147,22 +160,21 @@ if ($func == 'add') {
 
 $querySelect = [];
 $queryJoin = [];
-foreach (rex_clang::getAll() as $clang_id => $clang) {
-    if (rex::getUser()->getComplexPerm('clang')->hasPerm($clang_id)) {
-        $as = rex_string::normalize($clang->getName());
+foreach ($clangAll as $clang_id => $clang) {
+    if (rex::getUser()->getComplexPerm('clang')->hasPerm($clang->getId())) {
+        $as = 'clang' . $clang->getId();
         $querySelect[] = $as . '.replace AS ' . 'id' . $clang->getId();
         $queryJoin[] = 'LEFT JOIN ' . rex::getTable('sprog_wildcard') . ' AS ' . $as . ' ON a.id = ' . $as . '.id AND ' . $as . '.clang_id = ' . $clang->getId();
     }
 }
 $querySelectAsString = count($querySelect) ? ', ' . implode(',', $querySelect) : '';
 $wildcards = rex_sql::factory();
-
-$search  = '';
-
+$search = '';
 if (strlen($search_term)) {
-    $search = "AND (a.`wildcard` LIKE '%". $search_term ."%' OR a.`replace` LIKE '%". $search_term ."%')";
+    $search = 'AND (a.`wildcard` LIKE "%' . $search_term . '%" OR a.`replace` LIKE "%' . $search_term . '%")';
 }
-$entries = $wildcards->setQuery('SELECT DISTINCT a.id, a.wildcard AS wildcard' . $querySelectAsString . ' FROM ' . rex::getTable('sprog_wildcard') . ' AS a ' . implode(' ', $queryJoin) . ' WHERE 1 '. $search .' ORDER BY wildcard')->getArray();
+$entries = $wildcards->setQuery('SELECT DISTINCT a.id, a.wildcard AS wildcard' . $querySelectAsString . ' FROM ' . rex::getTable('sprog_wildcard') . ' AS a ' . implode(' ', $queryJoin) . ' WHERE 1 ' . $search . ' ORDER BY wildcard')->getArray();
+//$entries = $wildcards->setQuery('SELECT DISTINCT a.id, a.wildcard AS wildcard' . $querySelectAsString . ' FROM ' . rex::getTable('sprog_wildcard') . ' AS a ' . implode(' ', $queryJoin) . ' ORDER BY wildcard')->getArray();
 
 if (count($entries)) {
     foreach ($entries as $entry) {
@@ -175,15 +187,19 @@ if (count($entries)) {
         // Edit form
         if ($func == 'edit' && $wildcard_id == $entry_id) {
             $td = '';
+            if (rex::getUser()->isAdmin()) {
+                $td .= '<td data-title="' . $this->i18n('wildcard') . '"><input class="form-control" type="text" name="wildcard_name" value="' . htmlspecialchars(($edit_wildcard_save ? $wildcard_name : $entry_wildcard)) . '" /></td>';
+            } else {
+                $td .= '<td data-title="' . $this->i18n('wildcard') . '">' . $entry_wildcard . '</td>';
+            }
             foreach ($entry as $lang_name => $replace) {
                 $clang_id = (int) trim($lang_name, 'id');
                 $td .= '<td data-title="' . rex_clang::get($clang_id)->getName() . '"><textarea class="form-control" name="wildcard_replaces[' . $clang_id . ']" rows="6">' . htmlspecialchars($replace) . '</textarea></td>';
             }
             $content .= '
-                        <tr class="mark" id="wildcard-'. $entry_id .'">
+                        <tr class="mark" id="wildcard-' . $entry_id . '">
                             <td class="rex-table-icon"><i class="rex-icon rex-icon-refresh"></i></td>
                             <td class="rex-table-id" data-title="' . $this->i18n('id') . '">' . $entry_id . '</td>
-                            <td data-title="' . $this->i18n('wildcard') . '"><input class="form-control" type="text" name="wildcard_name" value="' . htmlspecialchars(($edit_wildcard_save ? $wildcard_name : $entry_wildcard)) . '" /></td>
                             ' . $td . '
                             <td class="rex-table-action" colspan="2"><button class="btn btn-save" type="submit" name="edit_wildcard_save"' . rex::getAccesskey($this->i18n('update'), 'save') . ' value="1">' .  $this->i18n('update') . '</button></td>
                         </tr>';
@@ -195,13 +211,13 @@ if (count($entries)) {
             }
 
             $content .= '
-                        <tr id="wildcard-'. $entry_id .'">
-                            <td class="rex-table-icon"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-'. $entry_id .'"><i class="rex-icon rex-icon-refresh"></i></a></td>
+             <tr id="wildcard-' . $entry_id . '">
+                            <td class="rex-table-icon"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-' . $entry_id . '"><i class="rex-icon rex-icon-refresh"></i></a></td>
                             <td class="rex-table-id" data-title="' . $this->i18n('id') . '">' . $entry_id . '</td>
                             <td data-title="' . $this->i18n('wildcard') . '">' . $entry_wildcard . '</td>
                             ' . $td . '
-                            <td class="rex-table-action"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-'. $entry_id .'"><i class="rex-icon rex-icon-edit"></i> ' . $this->i18n('function_edit') . '</a></td>
-                            <td class="rex-table-action"><a href="' . rex_url::currentBackendPage(['func' => 'delete', 'wildcard_id' => $entry_id]) . '" data-confirm="' . $this->i18n('delete') . ' ?"><i class="rex-icon rex-icon-delete"></i> ' . $this->i18n('delete') . '</a></td>
+                            <td class="rex-table-action"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-' . $entry_id . '"><i class="rex-icon rex-icon-edit"></i> ' . $this->i18n('function_edit') . '</a></td>
+                            <td class="rex-table-action">' . (rex::getUser()->isAdmin() ? '<a href="' . rex_url::currentBackendPage(['func' => 'delete', 'wildcard_id' => $entry_id]) . '" data-confirm="' . $this->i18n('delete') . ' ?"><i class="rex-icon rex-icon-delete"></i> ' . $this->i18n('delete'). '</a>' : '') . '</td>
                         </tr>';
         }
     }
@@ -213,9 +229,13 @@ $content .= '
 
 echo $message;
 
+$searchControl = '<div class="form-inline"><div class="input-group input-group-xs"><input class="form-control" style="height: 24px; padding-top: 3px; padding-bottom: 3px; font-size: 12px; line-height: 1;" type="text" name="search-term" value="' . htmlspecialchars($search_term) . '" /><div class="input-group-btn"><button type="submit" class="btn btn-primary btn-xs">' . $this->i18n('search') . '</button></div></div></div>';
+$searchControl = ($func == '') ? '<form action="' . \rex_url::currentBackendPage() . '" method="post">' . $searchControl . '</form>' : $searchControl;
+
 $fragment = new rex_fragment();
 $fragment->setVar('title', $this->i18n('wildcard_caption'), false);
 $fragment->setVar('content', $content, false);
+$fragment->setVar('options', $searchControl, false);
 $content = $fragment->parse('core/page/section.php');
 
 if ($func == 'add' || $func == 'edit') {
