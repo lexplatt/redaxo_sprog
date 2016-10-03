@@ -92,7 +92,20 @@ if ($add_wildcard_save || $edit_wildcard_save) {
                 }
                 $editWildcard->setValue('replace', $wildcard_replaces[$clang_id]);
                 $editWildcard->addGlobalUpdateFields();
-                $editWildcard->update();
+                $result = $editWildcard->update();
+                if (!$result->getRows())
+                {
+                    $editWildcard->setTable(rex::getTable('sprog_wildcard'));
+                    $editWildcard->setValue('id', $wildcard_id);
+                    $editWildcard->setValue('clang_id', $clang_id);
+                    $editWildcard->setValue('wildcard', $wildcard_name);
+                    $editWildcard->setValue('replace', $wildcard_replaces[$clang_id]);
+                    $editWildcard->addGlobalUpdateFields();
+                    $editWildcard->addGlobalCreateFields();
+                    $editWildcard->insert();
+                }
+            }
+            else{
             }
         }
 
