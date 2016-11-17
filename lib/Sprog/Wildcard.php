@@ -274,6 +274,7 @@ class Wildcard
                 WHERE   
                     clang_id = "' . \rex_clang::getStartId() . '"
                     AND wildcard NOT IN("'. implode('","', $wildcards) .'")
+                ORDER BY wildcard
             ';
 
             $sql->setDebug(false);

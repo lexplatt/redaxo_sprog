@@ -61,7 +61,6 @@ sprog_settings_wildcard_open_close_tag = öffnendes/schließendes Tag
 
 sprog_wildcard = Platzhalter
 sprog_wildcard_search = Suche
-sprog_wildcard_search_term = Suchbegriff
 sprog_wildcard_title = Platzhalter
 sprog_wildcard_add = Platzhalter hinzufügen
 sprog_wildcard_added = Platzhalter wurde hinzugefügt
@@ -78,6 +77,8 @@ sprog_search = Suchen
 
 sprog_import = Importieren
 sprog_import_csv_upload = CSV importieren
+sprog_csv_download = CSV herunterladen
+sprog_csv_download_text = Laden Sie alle Platzhalter in allen Sprachen herunter um diese als CSV bearbeiten und anschließend wieder hochladen zu können
 sprog_upload = hochladen
 sprog_import_file_label = CSV Datei
 sprog_import_overwrite_wildcards = Bestehende Platzhalter überschreiben

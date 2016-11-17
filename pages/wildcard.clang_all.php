@@ -122,17 +122,6 @@ if ($error != '') {
     $message .= rex_view::error($error);
 }
 
-$formElements = '
-    <div class="panel-body form-group">
-        <label for="exampleInputName2">'. $this->i18n('wildcard_search_term') .'</label>
-        <input type="text" class="form-control text-right" name="search-term" value="'. $search_term .'"/>
-        <button type="submit" class="btn btn-primary">'. $this->i18n('search') .'</button>
-    </div>';
-$fragment = new rex_fragment();
-$fragment->setVar('title', $this->i18n('wildcard_search'));
-$fragment->setVar('content', $formElements, false);
-echo '<form action="' . \rex_url::currentBackendPage() . '" method="post" class="form-inline">'. $fragment->parse('core/page/section.php') .'</form>';
-
 $th = '';
 $td_add = '';
 foreach ($clangAll as $clang_id => $clang) {

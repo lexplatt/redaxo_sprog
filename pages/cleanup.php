@@ -19,33 +19,66 @@ $func = rex_request('func', 'string');
 if ($func == 'find')
 {
     // - - - - - - - - - - - - - - - - - - - - - - Find
-    $wildcards = Wildcard::getUnusedWildcards();
+    $open_tag         = Wildcard::getOpenTag();
+    $close_tag        = Wildcard::getCloseTag();
+    $unused_wildcards = Wildcard::getUnusedWildcards();
 
     $panelBody = '
-        <h3>' . sprintf($this->i18n('cleanup_unused_count'), count($wildcards)) . '</h3>
         <div>
-            <a class="select-all" href="#">'. $this->i18n('cleanup_select_all') .'</a> |
-            <a class="unselect-all" href="#">'. $this->i18n('cleanup_unselect_all') .'</a>
+            <a class="select-all" href="#">' . $this->i18n('cleanup_select_all') . '</a> |
+            <a class="unselect-all" href="#">' . $this->i18n('cleanup_unselect_all') . '</a>
         </div><br/>
         <ul class="list-unstyled">
     ';
 
-    foreach ($wildcards as $wc) {
-        $panelBody .= '
-            <li>
-                <label>
-                    <input type="checkbox" name="wildcards[]" value="'. $wc .'" /> '. $wc .'
-                </label>
-            </li>
-        ';
+    if (count($unused_wildcards))
+    {
+        // check if unused wilcards are used in fragments
+        $wc_pattern = $open_tag .'[a-z].[a-z][^#]*'. $close_tag;
+        exec("grep -rho -e '{$wc_pattern}' ". \rex_path::src('addons') ." | uniq", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            if (in_array ($open_tag . $wc . $close_tag, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
+        }
     }
+
+    if (count($unused_wildcards))
+    {
+        // check if unused wilcards are used in fragments
+        $wc_pattern = 'Wildcard::get(\W[a-z].[a-z][^)]*';
+        exec("grep -rhoe '{$wc_pattern}' ". \rex_path::src('addons') ." | uniq | sed 's/Wildcard::get(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            if (in_array ($wc, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
+            else
+            {
+                $panelBody .= '
+                    <li>
+                        <label>
+                            <input type="checkbox" name="wildcards[]" value="' . $wc . '" /> ' . $wc . '
+                        </label>
+                    </li>
+                ';
+            }
+        }
+    }
+
+
     $panelBody .= '</ul>';
     $panelBody .= '<button class="btn btn-apply" type="submit" name="func" value="delete">' . $this->i18n('cleanup_remove_selected') . '</button>';
 
     $fragment = new \rex_fragment();
-    $fragment->setVar('title', $this->i18n('cleanup_find_title'), false);
-    $fragment->setVar('class', 'edit', false);
-    $fragment->setVar('body', $panelBody, false);
+    $fragment->setVar('title', $this->i18n('cleanup_find_title'), FALSE);
+    $fragment->setVar('class', 'edit', FALSE);
+    $fragment->setVar('body', '<h3>'. sprintf($this->i18n('cleanup_unused_count'), count($unused_wildcards)) .'</h3>'. $panelBody, FALSE);
     $sections .= $fragment->parse('core/page/section.php');
 }
 
@@ -54,7 +87,7 @@ else if ($func == 'delete')
     // - - - - - - - - - - - - - - - - - - - - - - Delete
     $wildcards = rex_post('wildcards', 'array');
     $sql       = \rex_sql::factory();
-    $query     = 'DELETE FROM '. \rex::getTable('sprog_wildcard') .' WHERE wildcard IN("'. implode('","', $wildcards) .'")';
+    $query     = 'DELETE FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE wildcard IN("' . implode('","', $wildcards) . '")';
     $sql->setQuery($query);
 
     $message = \rex_view::info(sprintf($this->i18n('cleanup_items_removed'), count($wildcards)));
@@ -69,9 +102,9 @@ if ($func == '')
         <h3>' . $this->i18n('cleanup_title') . '</h3>
         <p>' . \rex_i18n::rawMsg('sprog_cleanup_info') . '</p>
     ';
-    $fragment = new \rex_fragment();
-    $fragment->setVar('title', $this->i18n('cleanup'), false);
-    $fragment->setVar('body', $panelBody, false);
+    $fragment  = new \rex_fragment();
+    $fragment->setVar('title', $this->i18n('cleanup'), FALSE);
+    $fragment->setVar('body', $panelBody, FALSE);
     $sections .= $fragment->parse('core/page/section.php');
 
     // - - - - - - - - - - - - - - - - - - - - - - Buttons
@@ -79,16 +112,15 @@ if ($func == '')
     $formElements = [
         ['field' => '<button class="btn btn-apply" type="submit" name="func" value="find"' . \rex::getAccesskey($this->i18n('cleanup_find_unused'), 'apply') . '>' . $this->i18n('cleanup_find_unused') . '</button>'],
     ];
-    $fragment = new \rex_fragment();
-    $fragment->setVar('elements', $formElements, false);
+    $fragment     = new \rex_fragment();
+    $fragment->setVar('elements', $formElements, FALSE);
     $buttons = $fragment->parse('core/form/submit.php');
 
     $fragment = new \rex_fragment();
-    $fragment->setVar('class', 'edit', false);
-    $fragment->setVar('buttons', $buttons, false);
+    $fragment->setVar('class', 'edit', FALSE);
+    $fragment->setVar('buttons', $buttons, FALSE);
     $sections .= $fragment->parse('core/page/section.php');
 }
-
 
 
 echo $message;
