@@ -58,6 +58,21 @@ if ($func == 'find')
             {
                 unset($unused_wildcards[$index]);
             }
+        }
+    }
+
+    if (count($unused_wildcards))
+    {
+        // check if unused wilcards are used in developer files
+        $wc_pattern = 'Wildcard::get(\W[a-z].[a-z][^)]*';
+        exec("grep -rhoe '{$wc_pattern}' ". \rex_path::addonData('developer') ." | uniq | sed 's/Wildcard::get(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            if (in_array ($wc, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
             else
             {
                 $panelBody .= '
