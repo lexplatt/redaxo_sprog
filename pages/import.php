@@ -46,7 +46,7 @@ if ($func == 'update')
                 // bypass the wildcard column
                 continue;
             }
-            else if ($lang->getCode() == $langCode)
+            else if ($lang->getCode() == $langCode || $lang->getName() == $langCode)
             {
                 $found          = TRUE;
                 $clangs[$index] = $lang->getId();

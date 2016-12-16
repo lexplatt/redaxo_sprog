@@ -48,7 +48,7 @@ if ($func == 'find')
 
     if (count($unused_wildcards))
     {
-        // check if unused wilcards are used in fragments
+        // check if unused wilcards are used in fragments - find by static method call
         $wc_pattern = 'Wildcard::get(\W[a-z].[a-z][^)]*';
         exec("grep -rhoe '{$wc_pattern}' ". \rex_path::src('addons') ." | uniq | sed 's/Wildcard::get(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
 
@@ -63,13 +63,29 @@ if ($func == 'find')
 
     if (count($unused_wildcards))
     {
-        // check if unused wilcards are used in developer files
+        // check if unused wilcards are used in developer files - find by static method call
         $wc_pattern = 'Wildcard::get(\W[a-z].[a-z][^)]*';
         exec("grep -rhoe '{$wc_pattern}' ". \rex_path::addonData('developer') ." | uniq | sed 's/Wildcard::get(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
 
         foreach ($unused_wildcards as $index => $wc)
         {
             if (in_array ($wc, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
+        }
+    }
+
+    if (count($unused_wildcards))
+    {
+        // check if unused wilcards are used in other wildcards
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            $sql = \rex_sql::factory();
+            $sql->setQuery("SELECT wildcard FROM rex_sprog_wildcard WHERE `replace` LIKE :w1", [':w1' => "%{$open_tag}{$wc}{$close_tag}%"]);
+            $found_wc_usage = $sql->getRow();
+
+            if ($found_wc_usage)
             {
                 unset($unused_wildcards[$index]);
             }
