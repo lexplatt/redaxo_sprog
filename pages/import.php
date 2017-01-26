@@ -35,6 +35,7 @@ if ($func == 'update')
     }
     fclose($handle);
 
+
     // find langs
     foreach (\rex_clang::getAll() as $lang)
     {
@@ -46,7 +47,7 @@ if ($func == 'update')
                 // bypass the wildcard column
                 continue;
             }
-            else if ($lang->getCode() == $langCode || $lang->getName() == $langCode)
+            else if ($lang->getCode() == $langCode || strtolower($lang->getName()) == strtolower($langCode))
             {
                 $found          = TRUE;
                 $clangs[$index] = $lang->getId();
