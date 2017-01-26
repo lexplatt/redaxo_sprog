@@ -214,11 +214,11 @@ if (count($entries)) {
 
             $content .= '
              <tr id="wildcard-' . $entry_id . '">
-                            <td class="rex-table-icon"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-' . $entry_id . '"><i class="rex-icon rex-icon-refresh"></i></a></td>
+                            <td class="rex-table-icon"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '"><i class="rex-icon rex-icon-refresh"></i></a></td>
                             <td class="rex-table-id" data-title="' . $this->i18n('id') . '">' . $entry_id . '</td>
                             <td data-title="' . $this->i18n('wildcard') . '">' . $entry_wildcard . '</td>
                             ' . $td . '
-                            <td class="rex-table-action"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '#wildcard-' . $entry_id . '"><i class="rex-icon rex-icon-edit"></i> ' . $this->i18n('function_edit') . '</a></td>
+                            <td class="rex-table-action"><a href="' . rex_url::currentBackendPage(['func' => 'edit', 'wildcard_id' => $entry_id]) . '"><i class="rex-icon rex-icon-edit"></i> ' . $this->i18n('function_edit') . '</a></td>
                             <td class="rex-table-action">' . (rex::getUser()->isAdmin() ? '<a href="' . rex_url::currentBackendPage(['func' => 'delete', 'wildcard_id' => $entry_id]) . '" data-confirm="' . $this->i18n('delete') . ' ?"><i class="rex-icon rex-icon-delete"></i> ' . $this->i18n('delete'). '</a>' : '') . '</td>
                         </tr>';
         }
