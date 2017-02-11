@@ -9,7 +9,7 @@
  */
 
 (function ($) {
-    $(document).ready(function () {
+    $(document).on('rex:ready', function (event, container) {
 
         var DEBUGMODE = true; // set debug mode
 
