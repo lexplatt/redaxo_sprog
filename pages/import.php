@@ -13,70 +13,56 @@ namespace Sprog;
 
 $sections = '';
 
-$func = rex_request('func', 'string');
+$func  = rex_request('func', 'string');
+$local = rex_request('local_translations', 'int', 0);
 
 if ($func == 'update')
 {
-    global $delimiter;
-
     $clangs    = [];
     $_values   = [];
     $sql       = \rex_sql::factory();
     $message   = $this->i18n('import_process') . "<br/><br/>";
     $force_ow  = rex_post('force_overwrite', 'int');
     $file_data = rex_files('csv-file');
-    $__temp    = array_map('str_getcsv', file($file_data['tmp_name']));
-    $delimiter = count($__temp[0]) == 1 ? ";" : ",";
-    $handle    = fopen($file_data['tmp_name'], "r");
 
-    while (($data = fgetcsv($handle, NULL, $delimiter)) !== FALSE)
+    if (strlen($file_data['tmp_name']))
     {
-        $_values[] = $data;
+        $_values   = sprogloadCSV($file_data['tmp_name']);
+        $wildcards = array_keys($_values);
     }
-    fclose($handle);
-
+    if ($local)
+    {
+        $_values   = array_merge(sprogloadCSV(__DIR__ .'/../translations.csv'), $_values);
+        $wildcards = $wildcards ?: array_keys($_values);
+    }
 
     // find langs
     foreach (\rex_clang::getAll() as $lang)
     {
-        $found = FALSE;
-        foreach ($_values[0] as $index => $langCode)
-        {
-            if ($index == 0)
-            {
-                // bypass the wildcard column
-                continue;
-            }
-            else if ($lang->getCode() == $langCode || strtolower($lang->getName()) == strtolower($langCode))
-            {
-                $found          = TRUE;
-                $clangs[$index] = $lang->getId();
-                $message .= '<p class="bg-success">' . $this->i18n('import_lang_importing', strtoupper($lang->getName())) . "</p>";
-                break;
-            }
-        }
-        if (!$found)
+        if (!in_array($lang->getId(), array_keys($_values[$wildcards[0]])))
         {
             $message .= '<p class="bg-warning">' . $this->i18n('import_lang_not_exists', strtoupper($lang->getName())) . "</p>";
         }
+        else
+        {
+            $clangs[] = $lang->getId();
+            $message .= '<p class="bg-success">' . $this->i18n('import_lang_importing', strtoupper($lang->getName())) . "</p>";
+        }
     }
-    unset($_values[0]);
+    $message .= '<hr/>';
 
-    
-    foreach ($_values as $value)
+    foreach ($_values as $wildcard => $values)
     {
-        $wildcard = trim($value[0]);
-        $newId    = 0;
-
         if ($wildcard == '')
         {
             // no wildcard set - skip row
             continue;
         }
+        $newId = 0;
 
-        foreach ($clangs as $column => $clang_id)
+        foreach ($clangs as $clang_id)
         {
-            $replace = trim($value[$column]);
+            $replace = trim($values[$clang_id]);
 
             // check if wildcard already exists for this lang
             $sql->setQuery('SELECT * FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE `wildcard` = :wildcard', [':wildcard' => $wildcard]);
@@ -145,7 +131,7 @@ if ($func == 'update')
             }
         }
     }
-    
+
     echo \rex_view::success($message);
 }
 
@@ -162,6 +148,17 @@ $formElements = [
 $fragment     = new \rex_fragment();
 $fragment->setVar('elements', $formElements, FALSE);
 $panelElements .= $fragment->parse('core/form/form.php');
+
+// local file
+$formElements = [
+    [
+        'label' => '<label for="wildcard-clang-switch">' . $this->i18n('import_local_translations') . '</label>',
+        'field' => '<input type="checkbox" name="local_translations" value="1" />',
+    ],
+];
+$fragment     = new \rex_fragment();
+$fragment->setVar('elements', $formElements, FALSE);
+$panelElements .= $fragment->parse('core/form/checkbox.php');
 
 // overwrite checkbox
 $formElements = [

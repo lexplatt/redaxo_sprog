@@ -20,6 +20,7 @@ sprog_import = Importieren
 sprog_import_csv_upload = CSV importieren
 sprog_upload = hochladen
 sprog_import_file_label = CSV Datei
+sprog_import_local_translations = Basis-Platzhalter aus lokaler Datei importieren
 sprog_import_overwrite_wildcards = Bestehende Platzhalter überschreiben
 sprog_import_process = Importiere Platzhalter:
 sprog_import_lang_not_exists = "%s" wurde nicht gefunden!
