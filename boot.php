@@ -121,7 +121,6 @@ function saveToLocalCSV($wildcard, $replaces)
     $values = sprogloadCSV($file);
 
     $values[$wildcard] = $replaces;
-    pr($values); exit;
 
     $csv_head = ['Wildcard'];
     $lang_ids = array_keys($replaces);
