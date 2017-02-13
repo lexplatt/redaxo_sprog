@@ -102,7 +102,8 @@ function sprogloadCSV($file)
     }
     unset($_values[0]);
 
-    foreach ($_values as $value) {
+    foreach ($_values as $value)
+    {
         $data = [];
 
         foreach ($langs as $index => $lang_id)
@@ -112,6 +113,36 @@ function sprogloadCSV($file)
         $values[$value[0]] = $data;
     }
     return $values;
+}
+
+function saveToLocalCSV($wildcard, $replaces)
+{
+    $file   = __DIR__ . '/translations.csv';
+    $values = sprogloadCSV($file);
+
+    $values[$wildcard] = $replaces;
+    pr($values); exit;
+
+    $csv_head = ['Wildcard'];
+    $lang_ids = array_keys($replaces);
+
+    // get set lang header
+    foreach ($lang_ids as $lang_id)
+    {
+        $csv_head[] = rex_clang::get($lang_id)->getValue('name');
+    }
+
+    $out = fopen($file, 'w');
+
+    fputcsv($out, $csv_head);
+
+
+    foreach ($values as $wildcard => $replaces)
+    {
+        array_unshift($replaces, $wildcard);
+        fputcsv($out, $replaces);
+    }
+    fclose($out);
 }
 
 /**

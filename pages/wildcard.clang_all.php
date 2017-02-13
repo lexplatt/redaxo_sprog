@@ -112,6 +112,13 @@ if ($add_wildcard_save || $edit_wildcard_save) {
         $func = '';
         unset($wildcard_id);
     }
+
+    // save wildcard to local csv
+    list ($prefix, $name) = explode('.', $wildcard_name);
+    if (in_array($prefix, ['action', 'error', 'label', 'privacy']))
+    {
+        saveToLocalCSV($wildcard_name, $wildcard_replaces);
+    }
 }
 
 if ($success != '') {
