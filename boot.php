@@ -177,9 +177,21 @@ function sprogarray(array $array, array $fields, $fallback_clang_id = 0, $separa
 }
 
 
-if (!rex::isBackend())
-{
-    \rex_extension::register('OUTPUT_FILTER', '\Sprog\Extension::replaceWildcards');
+
+$filters = $this->getProperty('filter');
+$filters = \rex_extension::registerPoint(new \rex_extension_point('SPROG_FILTER', $filters));
+
+$registeredFilters = [];
+if (count($filters) > 0) {
+    foreach ($filters as $filter) {
+        $instance = new $filter();
+        $registeredFilters[$instance->name()] = $instance;
+    }
+}
+
+
+if (!rex::isBackend()) {
+    \rex_extension::register('OUTPUT_FILTER', '\Sprog\Extension::replaceWildcards', rex_extension::NORMAL, ['filters' => $registeredFilters]);
 }
 
 if (rex::isBackend() && rex::getUser())

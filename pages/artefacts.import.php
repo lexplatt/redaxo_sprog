@@ -13,52 +13,61 @@ namespace Sprog;
 
 $sections = '';
 
-$func = rex_request('func', 'string');
+$func  = rex_request('func', 'string');
+$local = rex_request('local_translations', 'int', 0);
 
-if ($func == 'update') {
-    $message = $this->i18n('import_process') . '<br /><br />';
-    $force_ow = rex_post('force-overwrite', 'int');
+if ($func == 'update')
+{
+    $clangs    = [];
+    $_values   = [];
+    $sql       = \rex_sql::factory();
+    $message   = $this->i18n('import_process') . "<br/><br/>";
+    $force_ow  = rex_post('force_overwrite', 'int');
     $file_data = rex_files('csv-file');
-    $_values = array_map('str_getcsv', file($file_data['tmp_name']));
-    $clangs = [];
-    $sql = \rex_sql::factory();
+
+    if (strlen($file_data['tmp_name']))
+    {
+        $_values   = sprogloadCSV($file_data['tmp_name']);
+        $wildcards = array_keys($_values);
+    }
+    if ($local)
+    {
+        $_values   = array_merge(sprogloadCSV(__DIR__ .'/../translations.csv'), $_values);
+        $wildcards = $wildcards ?: array_keys($_values);
+    }
 
     // find langs
-    foreach (\rex_clang::getAll() as $lang) {
-        $found = false;
-        foreach ($_values[0] as $index => $langCode) {
-            if ($index == 0) {
-                // bypass the wildcard column
-                continue;
-            } elseif ($lang->getCode() == $langCode) {
-                $found = true;
-                $clangs[$index] = $lang->getId();
-                $message .= '<p class="bg-success">' . $this->i18n('import_lang_importing', strtoupper($lang->getName())) . '</p>';
-                break;
-            }
+    foreach (\rex_clang::getAll() as $lang)
+    {
+        if (!in_array($lang->getId(), array_keys($_values[$wildcards[0]])))
+        {
+            $message .= '<p class="bg-warning">' . $this->i18n('import_lang_not_exists', strtoupper($lang->getName())) . "</p>";
         }
-        if (!$found) {
-            $message .= '<p class="bg-warning">' . $this->i18n('import_lang_not_exists', strtoupper($lang->getName())) . '</p>';
+        else
+        {
+            $clangs[] = $lang->getId();
+            $message .= '<p class="bg-success">' . $this->i18n('import_lang_importing', strtoupper($lang->getName())) . "</p>";
         }
     }
-    unset($_values[0]);
+    $message .= '<hr/>';
 
-
-    foreach ($_values as $value) {
-        $wildcard = trim($value[0]);
-        $newId = 0;
-
-        if ($wildcard == '') {
+    foreach ($_values as $wildcard => $values)
+    {
+        if ($wildcard == '')
+        {
             // no wildcard set - skip row
             continue;
         }
+        $newId = 0;
 
-        foreach ($clangs as $column => $clang_id) {
-            $replace = trim($value[$column]);
+        foreach ($clangs as $clang_id)
+        {
+            $replace = trim($values[$clang_id]);
 
             // check if wildcard already exists for this lang
             $sql->setQuery('SELECT * FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE `wildcard` = :wildcard', [':wildcard' => $wildcard]);
-            if ($sql->getRows() > 0) {
+            if ($sql->getRows() > 0)
+            {
                 // check if it exists for the given lang_id
                 $rows = $sql->getArray();
                 $sql->setTable(\rex::getTable('sprog_wildcard'));
@@ -68,36 +77,46 @@ if ($func == 'update') {
                 $sql->addGlobalUpdateFields();
                 $sql->addGlobalCreateFields();
 
-                $found = false;
+                $found = FALSE;
 
-                foreach ($rows as $row) {
+                foreach ($rows as $row)
+                {
                     $sql->setValue('id', $row['id']);
-                    if ($row['clang_id'] == $clang_id) {
-                        if ($force_ow) {
-                            if ($replace == '') {
+                    if ($row['clang_id'] == $clang_id)
+                    {
+                        if ($force_ow)
+                        {
+                            if ($replace == '')
+                            {
                                 // empty value - delete row
                                 $sql->setWhere(['id' => $row['id'], 'clang_id' => $clang_id]);
                                 $sql->delete();
-                                $message .= $this->i18n('import_wildcard_deleted', $wildcard) .  '<br />';
-                            } else {
+                                $message .= $this->i18n('import_wildcard_deleted', $wildcard) . "<br/>";
+                            }
+                            else
+                            {
                                 // update the exiting row for the given lang
                                 $sql->setWhere(['id' => $row['id'], 'clang_id' => $clang_id]);
                                 $sql->update();
-                                $message .= $this->i18n('import_wildcard_updated', $wildcard) . '<br/>';
+                                $message .= $this->i18n('import_wildcard_updated', $wildcard) . "<br/>";
                             }
                         }
-                        $found = true;
+                        $found = TRUE;
                         break;
                     }
                 }
-                if (!$found && strlen($replace)) {
+                if (!$found && strlen($replace))
+                {
                     // is not present in db
                     $sql->insert();
-                    $message .= $this->i18n('import_wildcard_added', $wildcard) . '<br/>';
+                    $message .= $this->i18n('import_wildcard_added', $wildcard) . "<br/>";
                 }
-            } elseif (strlen($replace)) {
+            }
+            else if (strlen($replace))
+            {
                 $sql->setTable(\rex::getTable('sprog_wildcard'));
-                if (!$newId) {
+                if (!$newId)
+                {
                     $newId = $sql->setNewId('id');
                 }
                 $sql->setValue('id', $newId);
@@ -108,7 +127,7 @@ if ($func == 'update') {
                 $sql->addGlobalCreateFields();
                 $sql->insert();
 
-                $message .= $this->i18n('import_wildcard_added', $wildcard) . '<br/>';
+                $message .= $this->i18n('import_wildcard_added', $wildcard) . "<br/>";
             }
         }
     }
@@ -122,23 +141,34 @@ $panelElements = '';
 // upload field
 $formElements = [
     [
-        'label' => '<label for="csv-file">' . $this->i18n('import_file_label') . '</label>',
-        'field' => '<input class="form-control text-right" id="csv-file" type="file" name="csv-file" />',
+        'label' => '<label for="wildcard-open-tag">' . $this->i18n('import_file_label') . '</label>',
+        'field' => '<input type="file" class="form-control text-right" name="csv-file" />',
     ],
 ];
-$fragment = new \rex_fragment();
-$fragment->setVar('elements', $formElements, false);
+$fragment     = new \rex_fragment();
+$fragment->setVar('elements', $formElements, FALSE);
 $panelElements .= $fragment->parse('core/form/form.php');
+
+// local file
+$formElements = [
+    [
+        'label' => '<label for="wildcard-clang-switch">' . $this->i18n('import_local_translations') . '</label>',
+        'field' => '<input type="checkbox" name="local_translations" value="1" />',
+    ],
+];
+$fragment     = new \rex_fragment();
+$fragment->setVar('elements', $formElements, FALSE);
+$panelElements .= $fragment->parse('core/form/checkbox.php');
 
 // overwrite checkbox
 $formElements = [
     [
-        'label' => '<label>' . $this->i18n('import_overwrite_wildcards') . '</label>',
+        'label' => '<label for="wildcard-clang-switch">' . $this->i18n('import_overwrite_wildcards') . '</label>',
         'field' => '<input type="checkbox" name="force_overwrite" value="1" />',
     ],
 ];
-$fragment = new \rex_fragment();
-$fragment->setVar('elements', $formElements, false);
+$fragment     = new \rex_fragment();
+$fragment->setVar('elements', $formElements, FALSE);
 $panelElements .= $fragment->parse('core/form/checkbox.php');
 
 
@@ -147,13 +177,11 @@ $panelBody = '
         <input type="hidden" name="func" value="update" />
         ' . $panelElements . '
     </fieldset>';
-$fragment = new \rex_fragment();
-$fragment->setVar('class', 'edit', false);
-$fragment->setVar('title', $this->i18n('import_csv_upload'), false);
-$fragment->setVar('body', $panelBody, false);
+$fragment  = new \rex_fragment();
+$fragment->setVar('class', 'edit', FALSE);
+$fragment->setVar('title', $this->i18n('import_csv_upload'), FALSE);
+$fragment->setVar('body', $panelBody, FALSE);
 $sections .= $fragment->parse('core/page/section.php');
-
-
 
 
 // - - - - - - - - - - - - - - - - - - - - - - Buttons
@@ -163,13 +191,13 @@ $formElements = [
 ];
 
 $fragment = new \rex_fragment();
-$fragment->setVar('elements', $formElements, false);
+$fragment->setVar('elements', $formElements, FALSE);
 $buttons = $fragment->parse('core/form/submit.php');
 
 
 $fragment = new \rex_fragment();
-$fragment->setVar('class', 'edit', false);
-$fragment->setVar('buttons', $buttons, false);
+$fragment->setVar('class', 'edit', FALSE);
+$fragment->setVar('buttons', $buttons, FALSE);
 $sections .= $fragment->parse('core/page/section.php');
 
 echo '<form action="' . \rex_url::currentBackendPage() . '" method="post" enctype="multipart/form-data">' . $sections . '</form>';

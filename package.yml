@@ -3,6 +3,16 @@ version: '1.0.0-beta4'
 author: Thomas Blum
 supportpage: www.redaxo.org/de/forum/
 
+filter:
+    - Sprog\Filter\Format
+    - Sprog\Filter\Limit
+    - Sprog\Filter\Lower
+    - Sprog\Filter\Markdown
+    - Sprog\Filter\Raw
+    - Sprog\Filter\Title
+    - Sprog\Filter\Upper
+    - Sprog\Filter\Words
+
 page:
     title: 'translate:sprog'
     perm: sprog[]
@@ -22,15 +32,13 @@ page:
         settings:
             title: 'translate:settings'
             perm: admin[]
-        import:
-            title: 'translate:import'
+        artefacts:
+            title: 'translate:artefacts'
             perm: admin[]
-        export:
-            title: 'translate:export'
-            perm: admin[]
-        cleanup:
-            title: 'translate:cleanup'
-            perm: admin[]
+            subpages:
+                import: { title: 'translate:import' }
+                export: { title: 'translate:export' }
+                cleanup: { title: 'translate:cleanup' }
 
 
 pages:
