@@ -74,7 +74,7 @@ else
     // - - - - - - - - - - - - - - - - - - - - - - Buttons
 
     $formElements = [
-        ['field' => '<a href="' . \rex_url::backendPage('sprog/export', ['func' => 'export']) . '" class="btn btn-apply rex-form-aligned" ' . \rex::getAccesskey(\rex_i18n::msg('sprog_csv_download'), 'apply') . '>' . \rex_i18n::msg('sprog_csv_download') . '</a>'],
+        ['field' => '<a href="' . \rex_url::backendPage('sprog/artefacts/export', ['func' => 'export']) . '" class="btn btn-apply rex-form-aligned" ' . \rex::getAccesskey(\rex_i18n::msg('sprog_csv_download'), 'apply') . '>' . \rex_i18n::msg('sprog_csv_download') . '</a>'],
     ];
 
     $fragment = new \rex_fragment();
