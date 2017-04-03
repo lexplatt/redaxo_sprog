@@ -1,131 +1,185 @@
-Wildcard,Deutsch,Italiano,English,Francais
-action.abort,Abbrechen,Cancella,Abbrechen,Abbrechen
-action.back_to_overview,"zurück zur Übersicht","ritorna all'elenco","zurück zur Übersicht","zurück zur Übersicht"
-action.calculate_route,"Route planen","Calcola percorso","Route planen","Route planen"
-action.comment,kommentieren,commentare,comment,kommentieren
-action.download,herunterladen,scaricare,download,herunterladen
-action.edit,bearbeiten,modificare,edit,bearbeiten
-action.go_ahead,weiter,avanti,ahead,weiter
-action.go_back,zurück,indietro,back,zurück
-action.login,anmelden,accedi,login,anmelden
-action.logout,abmelden,esci,logout,abmelden
-action.register,registrieren,registrare,register,registrieren
-action.reset_password,"Password zurücksetzen","rimettere la password","reset password","Password zurücksetzen"
-action.respond,antworten,rispondere,antworten,antworten
-action.save,speichern,salvare,save,speichern
-action.search,suchen,cercare,search,suchen
-action.select.country,"Land auswählen","Selezionare paese","Select country","Land auswählen"
-action.select.lang,"Sprache wählen","Selezionare lingua","Choose language","Sprache wählen"
-action.select.please,"Bitte auswählen","Prego selezionare","Please choose","Bitte auswählen"
-action.send,absenden,inviare,submit,absenden
-action.share_article,"Artikel teilen","Condividere Articolo","Share Artikel","Artikel teilen"
-action.wait,"Bitte warten...","Si prega di aspettare...","Please wait...","Bitte warten..."
-company.country,Italien,Italia,Italy,Italien
-company.email,info@kreatif.it,info@kreatif.it,info@kreatif.it,info@kreatif.it
-company.location,Bozen,Bolzano,Bulsan,Bozen
-company.name,Kundenname,Kundenname,Kundenname,Kundenname
-company.phone,"+39 1111 999999","+39 1111 999999","+39 1111 999999","+39 1111 999999"
-company.postal,39100,39100,39100,39100
-company.province,BZ,BZ,BZ,BZ
-company.region,Südtirol,"Alto Adige","Alto Adige",Südtirol
-company.street,"Kravoglstr. 14","Via Kravogl 14","Via Kravogl 14","Kravoglstr. 14"
-company.vat,1234567890,1234567890,1234567890,1234567890
-error.field.checkbox_not_set,"Bitte setzen Sie das '{{fieldname}}'-Häckchen","Si prega di verificare la casella '{{fieldname}}'","Bitte setzen Sie das '{{fieldname}}'-Häckchen","Bitte setzen Sie das '{{fieldname}}'-Häckchen"
-error.field.email_not_valid,"Bitte geben Sie eine gültige Email ein","Si prega di inserire un'email valida","Bitte geben Sie eine gültige Email ein","Bitte geben Sie eine gültige Email ein"
-error.field.empty,"Bitte füllen Sie das Feld '{{fieldname}}' aus","Si prega di compilare il campo '{{fieldname}}'","Bitte füllen Sie das Feld '{{fieldname}}' aus","Bitte füllen Sie das Feld '{{fieldname}}' aus"
-error.field.fiscal_code_not_valid,"Bitte geben Sie eine gültige Steuernummer ein","Si prega di inserire un codice fiscale valido","Bitte geben Sie eine gültige Steuernummer ein","Bitte geben Sie eine gültige Steuernummer ein"
-error.field.no_option_selected,"Bitte wählen Sie eine Option beim Feld '{{fieldname}}'","Prego selezionare un'opzione – '{{fieldname}}'","Bitte wählen Sie eine Option beim Feld '{{fieldname}}'","Bitte wählen Sie eine Option beim Feld '{{fieldname}}'"
-error.field.vat_not_valid,"Bitte geben Sie eine gültige MwSt.Nr. ein","Si prega di inserire una P. IVA valida","Bitte geben Sie eine gültige MwSt.Nr. ein","Bitte geben Sie eine gültige MwSt.Nr. ein"
-label.adult_count,"Anzahl Erwachsene","Numero adulti","Anzahl Erwachsene","Anzahl Erwachsene"
-label.adults,Erwachsene,Adulti,Erwachsene,Erwachsene
-label.all,alle,tutti,alle,alle
-label.amount,Menge,quantità,Menge,Menge
-label.are_required_fields,"sind Pflichtfelder","sono campi obbligatori","sind Pflichtfelder","sind Pflichtfelder"
-label.article,Artikel,Articolo,Artikel,Artikel
-label.children,Kinder,Bambini,Kinder,Kinder
-label.children_count,"Anzahl Kinder","Numero bambini","Anzahl Kinder","Anzahl Kinder"
-label.close,Schließen,Chiudere,Schließen,Schließen
-label.comment,Kommentar,Commento,Kommentar,Kommentar
-label.comments,Kommentare,Commenti,Kommentare,Kommentare
-label.company,Firma,Dita,Firma,Firma
-label.contact_data,Kontaktdaten,"Dati di contatto",Kontaktdaten,Kontaktdaten
-label.country,Land,Paese,Land,Land
-label.date,Datum,Data,Datum,Datum
-label.description,Beschreibung,Descrizione,Beschreibung,Beschreibung
-label.email,Email,Email,Email,Email
-label.email_forgotten,"Email vergessen?","Email dimenticata?","Email vergessen?","Email vergessen?"
-label.error,Fehler,Errore,Fehler,Fehler
-label.fax,Fax,Fax,Fax,Fax
-label.women,Frau,Signora,Frau,Frau
-label.first_and_lastname,"Vor- und Nachname","Nome e Cognome","Vor- und Nachname","Vor- und Nachname"
-label.firstname,Vorname,Nome,Vorname,Vorname
-label.fiscal_code,Steuernummer,"Codice fiscale",Steuernummer,Steuernummer
-label.free,Frei,Libero,Frei,Frei
-label.from,von,da,von,von
-label.salutation,Anrede,Titolo,Anrede,Anrede
-label.here,hier,qui,here,hier
-label.home,Home,Home,Home,Home
-label.image_gallery,Bildergalerie,"Galleria d'immagini",Bildergalerie,Bildergalerie
-label.info,Info,Info,Info,Info
-label.invoice_address,Rechnungsadresse,"Indirizzo di fatturazione",Rechnungsadresse,Rechnungsadresse
-label.lang,Sprache,Lingua,Sprache,Sprache
-label.lastname,Nachname,Cognome,Nachname,Nachname
-label.legal_indication,"Rechtliche Hinweise","Informazioni legali","Rechtliche Hinweise","Rechtliche Hinweise"
-label.location,Ort,Localitá,Ort,Ort
-label.login,Login,Login,Login,Login
-label.login_success,"Erfolgreich angemeldet","Erfolgreich angemeldet","Erfolgreich angemeldet","Erfolgreich angemeldet"
-label.logout_success,"Erfolgreich abgemeldet","Erfolgreich abgemeldet","Erfolgreich abgemeldet","Erfolgreich abgemeldet"
-label.man,Herr,Signor,Herr,Herr
-label.mandatory,Pflichtfelder,"Campi obbligatori",Pflichtfelder,Pflichtfelder
-label.message,"Allgemeine Bemerkungen","Note generali","Allgemeine Bemerkungen","Allgemeine Bemerkungen"
-label.more_about,"mehr dazu","saperne di piú","mehr dazu","mehr dazu"
-label.more_images,"weitere Bilder","ulteriori immagini","weitere Bilder","weitere Bilder"
-label.newsletter,Newsletter,Newsletter,Newsletter,Newsletter
-label.next_slide,"nächstes Slide","prossimo slide","nächstes Slide","nächstes Slide"
-label.no,Nein,No,Nein,Nein
-label.offer,Angebot,Offerta,Angebot,Angebot
-label.ok,Ok,Ok,Ok,Ok
-label.order_now,"Jetzt bestellen","Compra ora","Jetzt bestellen","Jetzt bestellen"
-label.other_links,"Weitere Links","ulteriori link","Weitere Links","Weitere Links"
-label.page,Seite,Pagina,Seite,Seite
-label.password,Passwort,Password,Passwort,Passwort
-label.password_forgotten,"Passwort vergessen?","Password dimenticata?","Passwort vergessen?","Passwort vergessen?"
-label.period,Zeitraum,Periodo,Zeitraum,Zeitraum
-label.persons,Personen,Persone,Personen,Personen
-label.phone,Telefon,Telefono,Telefon,Telefon
-label.phone_short,Tel.,Tel.,Tel.,Tel.
-label.place,Platz,Posizione,Platz,Platz
-label.postal,PLZ,ZIP,PLZ,PLZ
-label.prev_slide,"vorheriges Slide","slide precedente","vorheriges Slide","vorheriges Slide"
-label.price,Preis,Prezzo,Preis,Preis
-label.privacy,Datenschutz,Privacy,Datenschutz,Datenschutz
-label.privacy_policy,Datenschutzbestimmungen,"Trattamento dei dati personali",Datenschutzbestimmungen,Datenschutzbestimmungen
-label.product,Produkt,Prodotto,Produkt,Produkt
-label.products,Produkte,Prodotti,Produkte,Produkte
-label.published_on,"Veröffentlicht am","Veröffentlicht am","Veröffentlicht am","Veröffentlicht am"
-label.registration,Registrierung,Registrazione,Registrierung,Registrierung
-label.request,Anfrage,Richiesta,Anfrage,Anfrage
-label.room_count,"Anzahl Zimmer","Numero camere","Anzahl Zimmer","Anzahl Zimmer"
-label.search,Suche,Ricerca,Suche,Suche
-label.search_result,Suchergebnis,"Risultato ricerca",Suchergebnis,Suchergebnis
-label.shipping,Versand,Spedizione,Shipping,Versand
-label.shipping_address,Versandadresse,"Indirizzo di spedizione",Versandadresse,Versandadresse
-label.starting_at_short,ab,da,ab,ab
-label.street,Straße,Via,Straße,Straße
-label.subject,Betreff,Oggetto,Betreff,Betreff
-label.submit,Absenden,Inviare,Absenden,Absenden
-label.this_article_is_offline,"Dieser Artikel ist offline und für normale User nicht erreichbar! {{be-link}}Ändern{{be-link}}","Dieser Artikel ist offline und für normale User nicht erreichbar!","Dieser Artikel ist offline und für normale User nicht erreichbar!","Dieser Artikel ist offline und für normale User nicht erreichbar! {{be-link}}Ändern{{be-link}}"
-label.to,bis,a,bis,bis
-label.tos,"Allgemeine Geschäftsbedingungen","Allgemeine Geschäftsbedingungen","Allgemeine Geschäftsbedingungen","Allgemeine Geschäftsbedingungen"
-label.tos_short,AGBs,AGBs,AGBs,AGBs
-label.username,Benutzername,Utente,Benutzername,Benutzername
-label.vat_short,"MwSt. Nr.","Part. IVA","MwSt. Nr.","MwSt. Nr."
-label.video,Video,Video,Video,Video
-label.visit_on_facebook,"Besuchen Sie uns auf Facebook","Besuchen Sie uns auf Facebook","Besuchen Sie uns auf Facebook","Besuchen Sie uns auf Facebook"
-label.warning,Warnung,Avviso,Warnung,Warnung
-label.website,Webseite,Sito,Webseite,Webseite
-label.wished_arrival,"Gewünschte Anreise","Data di arrivo","Gewünschte Anreise","Gewünschte Anreise"
-label.wished_departure,"Gewünschte Abreise","Data di partenza","Gewünschte Abreise","Gewünschte Abreise"
-label.wished_room,"Gewünschtes Zimmer","Tipologia di camera","Gewünschtes Zimmer","Gewünschtes Zimmer"
-label.yes,Ja,Si,Ja,Ja
-privacy.accept_tos,"Ja, ich akzeptiere die {{privacy-link}}Datenschutz Erklärung{{privacy-link}}. Wir geben Ihre Daten nicht an Dritte weiter.","Sì, acconsento al {{privacy-link}}trattamento dei miei dati personali Privacy{{privacy-link}}. I miei dati non saranno ceduti a terzi.","Ja, ich akzeptiere die {{privacy-link}}Datenschutz Erklärung{{privacy-link}}. Wir geben Ihre Daten nicht an Dritte weiter.","Ja, ich akzeptiere die {{privacy-link}}Datenschutz Erklärung{{privacy-link}}. Wir geben Ihre Daten nicht an Dritte weiter."
+Wildcard,Deutsch,Italiano
+action.abort,Abbrechen,Cancella
+action.back_to_overview,"zurück zur Übersicht","ritorna all'elenco"
+action.calculate_route,"Route planen","Calcola percorso"
+action.comment,kommentieren,commentare
+action.download,herunterladen,scaricare
+action.edit,bearbeiten,modificare
+action.go_ahead,weiter,avanti
+action.go_back,zurück,indietro
+action.login,anmelden,accedi
+action.logout,abmelden,esci
+action.register,registrieren,registrare
+action.reset_password,"Passwort zurücksetzen","rimettere la password"
+action.respond,antworten,rispondere
+action.save,speichern,salvare
+action.search,suchen,cercare
+action.select.country,"Land auswählen","Selezionare paese"
+action.select.lang,"Sprache wählen","Selezionare lingua"
+action.select.please,"Bitte auswählen","Prego selezionare"
+action.send,absenden,inviare
+action.share_article,"Artikel teilen","Condividere Articolo"
+action.wait,"Bitte warten...","Si prega di aspettare..."
+company.country,Italien,Italia
+company.email,info@kreatif.it,info@kreatif.it
+company.location,Bozen,Bolzano
+company.name,Kundenname,Kundenname
+company.phone,"+39 1111 999999","+39 1111 999999"
+company.postal,39100,39100
+company.province,BZ,BZ
+company.region,Südtirol,"Alto Adige"
+company.street,"Kravoglstr. 14","Via Kravogl 14"
+company.vat,1234567890,1234567890
+error.field.checkbox_not_set,"Bitte setzen Sie das '{{fieldname}}'-Häckchen","Si prega di verificare la casella '{{fieldname}}'"
+error.field.email_not_valid,"Bitte geben Sie eine gültige Email ein","Si prega di inserire un'email valida"
+error.field.empty,"Bitte füllen Sie das Feld '{{fieldname}}' aus","Si prega di compilare il campo '{{fieldname}}'"
+error.field.fiscal_code_not_valid,"Bitte geben Sie eine gültige Steuernummer ein","Si prega di inserire un codice fiscale valido"
+error.field.no_option_selected,"Bitte wählen Sie eine Option beim Feld '{{fieldname}}'","Prego selezionare un'opzione – '{{fieldname}}'"
+error.field.vat_not_valid,"Bitte geben Sie eine gültige MwSt.Nr. ein","Si prega di inserire una P. IVA valida"
+label.adult_count,"Anzahl Erwachsene","Numero adulti"
+label.adults,Erwachsene,Adulti
+label.all,alle,tutti
+label.amount,Menge,quantità
+label.are_required_fields,"sind Pflichtfelder","sono campi obbligatori"
+label.article,Artikel,Articolo
+label.children,Kinder,Bambini
+label.children_count,"Anzahl Kinder","Numero bambini"
+label.close,Schließen,Chiudere
+label.comment,Kommentar,Commento
+label.comments,Kommentare,Commenti
+label.company,Firma,Dita
+label.contact_data,Kontaktdaten,"Dati di contatto"
+label.country,Land,Paese
+label.date,Datum,Data
+label.description,Beschreibung,Descrizione
+label.email,Email,Email
+label.email_forgotten,"Email vergessen?","Email dimenticata?"
+label.error,Fehler,Errore
+label.fax,Fax,Fax
+label.women,Frau,Signora
+label.first_and_lastname,"Vor- und Nachname","Nome e Cognome"
+label.firstname,Vorname,Nome
+label.fiscal_code,Steuernummer,"Codice fiscale"
+label.free,Frei,Libero
+label.from,von,da
+label.salutation,Anrede,Titolo
+label.here,hier,qui
+label.home,Home,Home
+label.image_gallery,Bildergalerie,"Galleria d'immagini"
+label.info,Info,Info
+label.invoice_address,Rechnungsadresse,"Indirizzo di fatturazione"
+label.lang,Sprache,Lingua
+label.lastname,Nachname,Cognome
+label.legal_indication,"Rechtliche Hinweise","Informazioni legali"
+label.location,Ort,Localitá
+label.login,Login,Login
+label.login_success,"Erfolgreich angemeldet","Erfolgreich angemeldet"
+label.logout_success,"Erfolgreich abgemeldet","Erfolgreich abgemeldet"
+label.man,Herr,Signor
+label.mandatory,Pflichtfelder,"Campi obbligatori"
+label.message,"Allgemeine Bemerkungen","Note generali"
+label.more_about,"mehr dazu","saperne di piú"
+label.more_images,"weitere Bilder","ulteriori immagini"
+label.newsletter,Newsletter,Newsletter
+label.next_slide,"nächstes Slide","prossimo slide"
+label.no,Nein,No
+label.offer,Angebot,Offerta
+label.ok,Ok,Ok
+label.order_now,"Jetzt bestellen","Compra ora"
+label.other_links,"Weitere Links","ulteriori link"
+label.page,Seite,Pagina
+label.password,Passwort,Password
+label.password_forgotten,"Passwort vergessen?","Password dimenticata?"
+label.period,Zeitraum,Periodo
+label.persons,Personen,Persone
+label.phone,Telefon,Telefono
+label.phone_short,Tel.,Tel.
+label.place,Platz,Posizione
+label.postal,PLZ,ZIP
+label.prev_slide,"vorheriges Slide","slide precedente"
+label.price,Preis,Prezzo
+label.privacy,Datenschutz,Privacy
+label.privacy_policy,Datenschutzbestimmungen,"Trattamento dei dati personali"
+label.product,Produkt,Prodotto
+label.products,Produkte,Prodotti
+label.published_on,"Veröffentlicht am","Veröffentlicht am"
+label.registration,Registrierung,Registrazione
+label.request,Anfrage,Richiesta
+label.room_count,"Anzahl Zimmer","Numero camere"
+label.search,Suche,Ricerca
+label.search_result,Suchergebnis,"Risultato ricerca"
+label.shipping,Versand,Spedizione
+label.shipping_address,Versandadresse,"Indirizzo di spedizione"
+label.starting_at_short,ab,da
+label.street,Straße,Via
+label.subject,Betreff,Oggetto
+label.submit,Absenden,Inviare
+label.this_article_is_offline,"Dieser Artikel ist offline und für normale User nicht erreichbar! {{be-link}}Ändern{{be-link}}","Dieser Artikel ist offline und für normale User nicht erreichbar!"
+label.to,bis,a
+label.tos,"Allgemeine Geschäftsbedingungen","Allgemeine Geschäftsbedingungen"
+label.tos_short,AGBs,AGBs
+label.username,Benutzername,Utente
+label.vat_short,"MwSt. Nr.","Part. IVA"
+label.video,Video,Video
+label.visit_on_facebook,"Besuchen Sie uns auf Facebook","Besuchen Sie uns auf Facebook"
+label.warning,Warnung,Avviso
+label.website,Webseite,Sito
+label.wished_arrival,"Gewünschte Anreise","Data di arrivo"
+label.wished_departure,"Gewünschte Abreise","Data di partenza"
+label.wished_room,"Gewünschtes Zimmer","Tipologia di camera"
+label.yes,Ja,Si
+privacy.accept_tos,"Ich akzeptiere die {{privacy-link}}Datenschutz-Bestimmungen{{privacy-link}}.","Acconsento al {{privacy-link}}trattamento dei miei dati personali Privacy{{privacy-link}}."
+label.my_account,"Mein Konto","Mein Konto"
+action.reset,zurücksetzen,zurücksetzen
+action.to_login,"zur Anmeldung","zur Anmeldung"
+label.start_page,Startseite,Startseite
+label.siteinfo,"Copyright &copy;2017 ###company.name_short### ###company.region###
+Produced by {{kreatif-link}}Kreatif{{kreatif-link}}","Copyright &copy;2017 ###company.name_short### ###company.region###
+Produced by {{kreatif-link}}Kreatif{{kreatif-link}}"
+action.follow_us_on,"Folge uns auf","Folge uns auf"
+action.get_more,"Mehr erfahren","Mehr erfahren"
+label.name,Name,Nome
+label.age,Alter,Alter
+label.residence,Wohnort,Wohnort
+label.education,Ausbildung,Ausbildung
+label.details,Details,Dettagli
+label.categories,Kategorien,Categorie
+label.tags,Schlagwörter,Schlagwörter
+label.status,Status,Status
+action.filter,Filtern,Filtern
+label.units,Einheiten,Einheiten
+label.target_group,Zielgruppe,Zielgruppe
+label.time_of_day,Uhrzeit,Uhrzeit
+label.weekday,Wochentag,Wochentag
+error.login_failed,"Anmeldung ist fehlgeschlagen","Anmeldung ist fehlgeschlagen"
+error.no_user_found_for_given_mail,"Es ist kein Benutzer mit der angegeben Email registriert","Es ist kein Benutzer mit der angegeben Email registriert"
+label.pwd_reset_done,"Ihr Passwort wurde erfolgreich zurückgesetzt.
+Sie erhalten nun eine Email mit dem neuen Passwort.
+Bitte kontrollieren Sie Ihr Postfach","Ihr Passwort wurde erfolgreich zurückgesetzt.
+Sie erhalten nun eine Email mit dem neuen Passwort.
+Bitte kontrollieren Sie Ihr Postfach"
+label.overview,Übersicht,Übersicht
+label.total,Gesamt,Totale
+label.single_price,Einzelpreis,Einzelpreis
+label.person,Person,persona
+label.personal_data,"Persönliche Daten","Persönliche Daten"
+label.payment_method,Zahlungsmethode,Zahlungsmethode
+privacy.accept_agbs,"Ich akzeptiere die {{agb-link}}Allgemeinen Geschäftsbedingungen{{agb-link}}.","Ich akzeptiere die {{agb-link}}Allgemeinen Geschäftsbedingungen{{agb-link}}."
+label.birthyear,Geburtsjahr,Geburtsjahr
+label.woman,Frau,Signora
+label.fully_booked,Ausgebucht,Ausgebucht
+action.place_order,"Jetzt zahlungspflichtig buchen","Ordinare e pagare"
+label.booking,Buchung,Prenotazione
+label.order,Buchung,Prenotazione
+label.submit_success,"Anfrage erfolgreich versendet","Richiesta inviata con successo"
+action.shop_update_cart,"Warenkorb aktualisieren","Warenkorb aktualisieren"
+privacy.accept_cop,"Ich akzeptiere die {{cop-link}}Teilnahmebedingungen{{cop-link}}.","Ich akzeptiere die {{cop-link}}Teilnahmebedingungen{{cop-link}}."
+label.tax_included,"MwSt. inkl.","IVA incl."
+label.total_sum,Gesamtsumme,Totale
+label.participant,Teilnehmer,Teilnehmer
+label.subtotal,Zwischensumme,Subtotale
+label.additional_info,"weitere Infos","weitere Infos"
+label.invoice_num,Rechnungsnr.,Rechnungsnr.
+label.location_description,Ortsbeschreibung,Ortsbeschreibung
+label.optional,optional,optional
+action.share,teilen,condividere
