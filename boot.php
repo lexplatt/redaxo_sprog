@@ -194,19 +194,7 @@ if (!rex::isBackend()) {
     \rex_extension::register('OUTPUT_FILTER', '\Sprog\Extension::replaceWildcards', rex_extension::NORMAL, ['filters' => $registeredFilters]);
 }
 
-if (rex::isBackend() && rex::getUser())
-{
-    if ($this->getConfig('sync_structure_category_name_to_article_name'))
-    {
-        // Bug #607
-        // https://github.com/redaxo/redaxo/issues/607
-        // CAT_UPDATED wird nicht ausgelöst, wenn `pjax = true`
-        $structureAddon                = rex_addon::get('structure');
-        $structurePropertyPage         = $structureAddon->getProperty('page');
-        $structurePropertyPage['pjax'] = FALSE;
-        $structureAddon->setProperty('page', $structurePropertyPage);
-    }
-
+if (rex::isBackend() && rex::getUser()) {
     /*
     |--------------------------------------------------------------------------
     | ART_STATUS / ART_UPDATED / ART_META_UPDATED
