@@ -13,7 +13,7 @@ use \Sprog\Wildcard;
 
 class_alias('\Sprog\Wildcard', 'Wildcard');
 
-rex_perm::register('sprog[wildcard]', NULL, rex_perm::OPTIONS);
+rex_perm::register('sprog[wildcard]', null, rex_perm::OPTIONS);
 
 // number of articles to generate per single request
 // increase to speed up (reduces number of requests but extends script time)
@@ -24,7 +24,7 @@ $this->setConfig('chunkSizeArticles', 4);
 /**
  * Replaced some wildcards in given text.
  */
-function sprogdown($text, $clang_id = NULL)
+function sprogdown($text, $clang_id = null)
 {
     return Wildcard::parse($text, $clang_id);
 }
@@ -32,7 +32,7 @@ function sprogdown($text, $clang_id = NULL)
 /**
  * Replaced given wildcard.
  */
-function sprogcard($wildcard, $clang_id = NULL)
+function sprogcard($wildcard, $clang_id = null)
 {
     return Wildcard::get($wildcard, $clang_id);
 }
@@ -52,23 +52,38 @@ function sprogfield($field, $separator = '_')
 function sprogvalue(array $array, $field, $fallback_clang_id = 0, $separator = '_')
 {
     $modifiedField = sprogfield($field, $separator);
-    if (isset($array[$modifiedField]))
-    {
+    if (isset($array[$modifiedField])) {
         return $array[$modifiedField];
     }
 
     $modifiedField = $field . $separator . $fallback_clang_id;
-    if (isset($array[$modifiedField]))
-    {
+    if (isset($array[$modifiedField])) {
         return $array[$modifiedField];
     }
 
-    if (isset($array[$field]))
-    {
+    if (isset($array[$field])) {
         return $array[$field];
     }
 
-    return FALSE;
+    return false;
+}
+
+function sprogloadTranslationCSV(rex_clang $lang, $values = [])
+{
+    $file = __DIR__ . "/translations/{$lang->getCode()}.csv";
+
+    if (file_exists($file)) {
+        $_temp     = array_map('str_getcsv', file($file));
+        $delimiter = count($_temp[0]) == 1 ? ";" : ",";
+        $handle    = fopen($file, "r");
+
+        while (($data = fgetcsv($handle, null, $delimiter)) !== false) {
+            $values[$data[0]][$lang->getId()] = $data[1];
+        }
+        fclose($handle);
+    }
+
+    return $values;
 }
 
 function sprogloadCSV($file)
@@ -81,33 +96,24 @@ function sprogloadCSV($file)
     $delimiter = count($_temp[0]) == 1 ? ";" : ",";
     $handle    = fopen($file, "r");
 
-    while (($data = fgetcsv($handle, NULL, $delimiter)) !== FALSE)
-    {
+    while (($data = fgetcsv($handle, null, $delimiter)) !== false) {
         $_values[] = $data;
     }
     fclose($handle);
 
     // find langs
-    foreach (\rex_clang::getAll() as $lang)
-    {
-        if (
-            $lang->getCode() == $_values[0][$index]
-            || strtolower($lang->getName()) == strtolower($_values[0][$index])
-            || $lang->getId() == $_values[0][$index]
-        )
-        {
+    foreach (\rex_clang::getAll() as $lang) {
+        if ($lang->getCode() == $_values[0][$index] || strtolower($lang->getName()) == strtolower($_values[0][$index]) || $lang->getId() == $_values[0][$index]) {
             $langs[$index] = $lang->getId();
         }
         $index++;
     }
     unset($_values[0]);
 
-    foreach ($_values as $value)
-    {
+    foreach ($_values as $value) {
         $data = [];
 
-        foreach ($langs as $index => $lang_id)
-        {
+        foreach ($langs as $index => $lang_id) {
             $data[$lang_id] = $value[$index];
         }
         $values[$value[0]] = $data;
@@ -117,31 +123,23 @@ function sprogloadCSV($file)
 
 function saveToLocalCSV($wildcard, $replaces)
 {
-    $file   = __DIR__ . '/translations.csv';
-    $values = sprogloadCSV($file);
+    $langs = rex_clang::getAll();
 
-    $values[$wildcard] = $replaces;
+    foreach ($langs as $lang) {
+        $value = $replaces[$lang->getId()];
 
-    $csv_head = ['Wildcard'];
-    $lang_ids = array_keys($replaces);
+        if (strlen(trim($value))) {
+            $values = sprogloadTranslationCSV($lang);
+            $out    = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w');
 
-    // get set lang header
-    foreach ($lang_ids as $lang_id)
-    {
-        $csv_head[] = rex_clang::get($lang_id)->getValue('name');
+            $values[$wildcard] = $value;
+
+            foreach ($values as $wildcard => $replace) {
+                fputcsv($out, [$wildcard, $replace]);
+            }
+            fclose($out);
+        }
     }
-
-    $out = fopen($file, 'w');
-
-    fputcsv($out, $csv_head);
-
-
-    foreach ($values as $wildcard => $replaces)
-    {
-        array_unshift($replaces, $wildcard);
-        fputcsv($out, $replaces);
-    }
-    fclose($out);
 }
 
 /**
@@ -169,13 +167,11 @@ function saveToLocalCSV($wildcard, $replaces)
  */
 function sprogarray(array $array, array $fields, $fallback_clang_id = 0, $separator = '_')
 {
-    foreach ($fields as $field)
-    {
+    foreach ($fields as $field) {
         $array[$field] = sprogvalue($array, $field, $fallback_clang_id, $separator);
     }
     return $array;
 }
-
 
 
 $filters = $this->getProperty('filter');
@@ -184,7 +180,7 @@ $filters = \rex_extension::registerPoint(new \rex_extension_point('SPROG_FILTER'
 $registeredFilters = [];
 if (count($filters) > 0) {
     foreach ($filters as $filter) {
-        $instance = new $filter();
+        $instance                             = new $filter();
         $registeredFilters[$instance->name()] = $instance;
     }
 }
@@ -238,52 +234,38 @@ if (rex::isBackend() && rex::getUser()) {
     | PAGES_PREPARED
     |--------------------------------------------------------------------------
     */
-    rex_extension::register('PAGES_PREPARED', function ()
-    {
-        if (rex::getUser()->isAdmin())
-        {
-            if (\rex_be_controller::getCurrentPage() == 'sprog/settings')
-            {
+    rex_extension::register('PAGES_PREPARED', function () {
+        if (rex::getUser()->isAdmin()) {
+            if (\rex_be_controller::getCurrentPage() == 'sprog/settings') {
                 $func = rex_request('func', 'string');
-                if ($func == 'update')
-                {
+                if ($func == 'update') {
                     \rex_config::set('sprog', 'wildcard_clang_switch', rex_request('clang_switch', 'bool'));
                     \rex_config::set('sprog', 'clang_base', rex_request('clang_base', 'array'));
                 }
             }
         }
 
-        if (rex::getUser()->isAdmin() || rex::getUser()->hasPerm('sprog[wildcard]'))
-        {
+        if (rex::getUser()->isAdmin() || rex::getUser()->hasPerm('sprog[wildcard]')) {
             $page = \rex_be_controller::getPageObject('sprog/wildcard');
 
-            if (Wildcard::isClangSwitchMode())
-            {
+            if (Wildcard::isClangSwitchMode()) {
                 $clang_id = str_replace('clang', '', rex_be_controller::getCurrentPagePart(3));
                 $page->setSubPath(rex_path::addon('sprog', 'pages/wildcard.clang_switch.php'));
                 $clangAll  = \rex_clang::getAll();
                 $clangBase = $this->getConfig('clang_base');
                 // Alle Sprachen die eine andere Basis haben, nicht in der Navigation erscheinen lassen
-                foreach ($clangAll as $clang)
-                {
-                    if (isset($clangBase[$clang->getId()]) && $clangBase[$clang->getId()] != $clang->getId())
-                    {
+                foreach ($clangAll as $clang) {
+                    if (isset($clangBase[$clang->getId()]) && $clangBase[$clang->getId()] != $clang->getId()) {
                         unset($clangAll[$clang->getId()]);
                     }
                 }
-                foreach ($clangAll as $id => $clang)
-                {
-                    if (rex::getUser()->getComplexPerm('clang')->hasPerm($id))
-                    {
-                        $page->addSubpage((new rex_be_page('clang' . $id, $clang->getName()))
-                            ->setSubPath(rex_path::addon('sprog', 'pages/wildcard.clang_switch.php'))
-                            ->setIsActive($id == $clang_id)
-                        );
+                foreach ($clangAll as $id => $clang) {
+                    if (rex::getUser()->getComplexPerm('clang')->hasPerm($id)) {
+                        $page->addSubpage((new rex_be_page('clang' . $id, $clang->getName()))->setSubPath(rex_path::addon('sprog', 'pages/wildcard.clang_switch.php'))->setIsActive($id == $clang_id));
                     }
                 }
             }
-            else
-            {
+            else {
                 $page->setSubPath(rex_path::addon('sprog', 'pages/wildcard.clang_all.php'));
             }
         }
@@ -295,8 +277,7 @@ if (rex::isBackend() && rex::getUser()) {
     | PAGE_BODY_ATTR
     |--------------------------------------------------------------------------
     */
-    rex_extension::register('PAGE_BODY_ATTR', function (\rex_extension_point $ep)
-    {
+    rex_extension::register('PAGE_BODY_ATTR', function (\rex_extension_point $ep) {
         $subject            = $ep->getSubject();
         $subject['class'][] = 'rex-page-sprog-copy-popup';
         $ep->setSubject($subject);
@@ -308,10 +289,7 @@ if (rex::isBackend() && rex::getUser()) {
     | Stylesheets and Javascripts
     |--------------------------------------------------------------------------
     */
-    if (rex_be_controller::getCurrentPagePart(1) == 'sprog.copy.structure_content_popup' ||
-        rex_be_controller::getCurrentPagePart(1) == 'sprog.copy.structure_metadata_popup'
-    )
-    {
+    if (rex_be_controller::getCurrentPagePart(1) == 'sprog.copy.structure_content_popup' || rex_be_controller::getCurrentPagePart(1) == 'sprog.copy.structure_metadata_popup') {
         rex_view::addJsFile($this->getAssetsUrl('js/handlebars.min.js?v=' . $this->getVersion()));
         rex_view::addJsFile($this->getAssetsUrl('js/timer.jquery.min.js?v=' . $this->getVersion()));
     }

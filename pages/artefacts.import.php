@@ -28,17 +28,19 @@ if ($func == 'update')
     if (strlen($file_data['tmp_name']))
     {
         $_values   = sprogloadCSV($file_data['tmp_name']);
-        $wildcards = array_keys($_values);
     }
-    if ($local)
-    {
-        $_values   = array_merge(sprogloadCSV(__DIR__ .'/../translations.csv'), $_values);
-        $wildcards = $wildcards ?: array_keys($_values);
-    }
+
 
     // find langs
     foreach (\rex_clang::getAll() as $lang)
     {
+        if ($local)
+        {
+            $_values = sprogloadTranslationCSV($lang, $_values);
+        }
+
+        $wildcards = array_keys($_values);
+
         if (!in_array($lang->getId(), array_keys($_values[$wildcards[0]])))
         {
             $message .= '<p class="bg-warning">' . $this->i18n('import_lang_not_exists', strtoupper($lang->getName())) . "</p>";

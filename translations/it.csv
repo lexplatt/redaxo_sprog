@@ -1,0 +1,188 @@
+action.abort,Cancella
+action.back_to_overview,ritorna all'elenco
+action.calculate_route,Calcola percorso
+action.comment,commentare
+action.download,scaricare
+action.edit,modificare
+action.filter,Filtern
+action.follow_us_on,Folge uns auf
+action.get_more,Mehr erfahren
+action.go_ahead,avanti
+action.go_back,indietro
+action.login,accedi
+action.logout,esci
+action.place_order,Ordinare e pagare
+action.register,registrare
+action.reset,zurücksetzen
+action.reset_password,rimettere la password
+action.respond,rispondere
+action.save,salvare
+action.search,cercare
+action.select.country,Selezionare paese
+action.select.lang,Selezionare lingua
+action.select.please,Prego selezionare
+action.send,inviare
+action.share,condividere
+action.share_article,Condividere Articolo
+action.shop_update_cart,Warenkorb aktualisieren
+action.to_login,zur Anmeldung
+action.wait,Si prega di aspettare...
+company.country,Italia
+company.email,info@kreatif.it
+company.location,Bolzano
+company.name,Kundenname
+company.phone,+39 1111 999999
+company.postal,39100
+company.province,BZ
+company.region,Alto Adige
+company.street,Via Kravogl 14
+company.vat,1234567890
+error.field.checkbox_not_set,Si prega di verificare la casella '{{fieldname}}'
+error.field.email_not_valid,Si prega di inserire un'email valida
+error.field.empty,Si prega di compilare il campo '{{fieldname}}'
+error.field.fiscal_code_not_valid,Si prega di inserire un codice fiscale valido
+error.field.no_option_selected,Prego selezionare un'opzione – '{{fieldname}}'
+error.field.vat_not_valid,Si prega di inserire una P. IVA valida
+error.login_failed,Anmeldung ist fehlgeschlagen
+error.no_user_found_for_given_mail,Es ist kein Benutzer mit der angegeben Email registriert
+label.additional_info,weitere Infos
+label.adults,Adulti
+label.adult_count,Numero adulti
+label.age,Alter
+label.all,tutti
+label.amount,quantità
+label.are_required_fields,sono campi obbligatori
+label.article,Articolo
+label.birthyear,Geburtsjahr
+label.booking,Prenotazione
+label.categories,Categorie
+label.children,Bambini
+label.children_count,Numero bambini
+label.close,Chiudere
+label.comment,Commento
+label.comments,Commenti
+label.company,Dita
+label.contact_data,Dati di contatto
+label.country,Paese
+label.date,Data
+label.description,Descrizione
+label.details,Dettagli
+label.education,Ausbildung
+label.email,Email
+label.email_forgotten,Email dimenticata?
+label.enable_geolocation_tracking,Um ihren Standort bestimmen zu können müssen Sie die Ortungsdienste aktivieren. Laden Sie anschließend die Seite neu
+label.error,Errore
+label.fax,Fax
+label.firstname,Nome
+label.first_and_lastname,Nome e Cognome
+label.fiscal_code,Codice fiscale
+label.free,Libero
+label.from,da
+label.fully_booked,Ausgebucht
+label.here,qui
+label.home,Home
+label.image_gallery,Galleria d'immagini
+label.info,Info
+label.invoice_address,Indirizzo di fatturazione
+label.invoice_num,Rechnungsnr.
+label.lang,Lingua
+label.lastname,Cognome
+label.legal_indication,Informazioni legali
+label.location,Localitá
+label.location_description,Ortsbeschreibung
+label.login,Login
+label.login_success,Erfolgreich angemeldet
+label.logout_success,Erfolgreich abgemeldet
+label.maintenance_text,"Aus Wartungsgründen ist die Seite momentan nicht erreichbar.
+Bitte versuchen Sie es in Kürze nochmal."
+label.maintenance_title,"Seite ist momentan
+nicht verfügbar"
+label.man,Signor
+label.mandatory,Campi obbligatori
+label.message,Note generali
+label.more_about,saperne di piú
+label.more_images,ulteriori immagini
+label.my_account,Mein Konto
+label.name,Nome
+label.newsletter,Newsletter
+label.next_slide,prossimo slide
+label.no,No
+label.offer,Offerta
+label.ok,Ok
+label.optional,optional
+label.order,Prenotazione
+label.order_now,Compra ora
+label.other_links,ulteriori link
+label.overview,Übersicht
+label.page,Pagina
+label.participant,Teilnehmer
+label.password,Password
+label.password_forgotten,Password dimenticata?
+label.payment_method,Zahlungsmethode
+label.period,Periodo
+label.person,persona
+label.personal_data,Persönliche Daten
+label.persons,Persone
+label.phone,Telefono
+label.phone_short,Tel.
+label.place,Posizione
+label.postal,ZIP
+label.prev_slide,slide precedente
+label.price,Prezzo
+label.privacy,Privacy
+label.privacy_policy,Trattamento dei dati personali
+label.product,Prodotto
+label.products,Prodotti
+label.published_on,Veröffentlicht am
+label.pwd_reset_done,"Ihr Passwort wurde erfolgreich zurückgesetzt.
+Sie erhalten nun eine Email mit dem neuen Passwort.
+Bitte kontrollieren Sie Ihr Postfach"
+label.registration,Registrazione
+label.request,Richiesta
+label.residence,Wohnort
+label.room_count,Numero camere
+label.salutation,Titolo
+label.search,Ricerca
+label.search_result,Risultato ricerca
+label.shipping,Spedizione
+label.shipping_address,Indirizzo di spedizione
+label.single_price,Einzelpreis
+label.siteinfo,"Copyright &copy;2017 ###company.name_short### ###company.region###
+Produced by {{kreatif-link}}Kreatif{{kreatif-link}}"
+label.starting_at_short,da
+label.start_page,Startseite
+label.status,Status
+label.street,Via
+label.subject,Oggetto
+label.submit,Inviare
+label.submit_success,Richiesta inviata con successo
+label.subtotal,Subtotale
+label.tags,Schlagwörter
+label.target_group,Zielgruppe
+label.tax_included,IVA incl.
+label.this_article_is_offline,Dieser Artikel ist offline und für normale User nicht erreichbar!
+label.this_lang_is_offline,Diese Sprache ist offline und für normale User nicht erreichbar!
+label.this_object_is_offline,Dieses Objekt ist offline und für normale User nicht erreichbar! {{be-obj-link}}Ändern{{be-obj-link}}
+label.time_of_day,Uhrzeit
+label.to,a
+label.tos,Allgemeine Geschäftsbedingungen
+label.tos_short,AGBs
+label.total,Totale
+label.total_sum,Totale
+label.units,Einheiten
+label.username,Utente
+label.vat_short,Part. IVA
+label.video,Video
+label.visit_on_facebook,Besuchen Sie uns auf Facebook
+label.warning,Avviso
+label.website,Sito
+label.weekday,Wochentag
+label.wished_arrival,Data di arrivo
+label.wished_departure,Data di partenza
+label.wished_room,Tipologia di camera
+label.woman,Signora
+label.women,Signora
+label.yes,Si
+privacy.accept_agbs,Ich akzeptiere die {{agb-link}}Allgemeinen Geschäftsbedingungen{{agb-link}}.
+privacy.accept_cop,Ich akzeptiere die {{cop-link}}Teilnahmebedingungen{{cop-link}}.
+privacy.accept_tos,Acconsento al {{privacy-link}}trattamento dei miei dati personali Privacy{{privacy-link}}.

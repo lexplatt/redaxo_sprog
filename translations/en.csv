@@ -1,0 +1,185 @@
+action.abort,Abbrechen
+action.back_to_overview,zurück zur Übersicht
+action.calculate_route,Route planen
+action.comment,comment
+action.download,download
+action.edit,edit
+action.filter,Filter
+action.follow_us_on,
+action.get_more,
+action.go_ahead,ahead
+action.go_back,back
+action.login,login
+action.logout,logout
+action.place_order,
+action.register,register
+action.reset,
+action.reset_password,reset password
+action.respond,antworten
+action.save,save
+action.search,search
+action.select.country,Select country
+action.select.lang,Choose language
+action.select.please,Please choose
+action.send,submit
+action.share,
+action.share_article,Share Artikel
+action.shop_update_cart,
+action.to_login,
+action.wait,Please wait...
+company.country,Italy
+company.email,info@kreatif.it
+company.location,Bulsan
+company.name,Kundenname
+company.phone,+39 1111 999999
+company.postal,39100
+company.province,BZ
+company.region,Alto Adige
+company.street,Via Kravogl 14
+company.vat,1234567890
+error.field.checkbox_not_set,Bitte setzen Sie das '{{fieldname}}'-Häckchen
+error.field.email_not_valid,Bitte geben Sie eine gültige Email ein
+error.field.empty,Bitte füllen Sie das Feld '{{fieldname}}' aus
+error.field.fiscal_code_not_valid,Bitte geben Sie eine gültige Steuernummer ein
+error.field.no_option_selected,Bitte wählen Sie eine Option beim Feld '{{fieldname}}'
+error.field.vat_not_valid,Bitte geben Sie eine gültige MwSt.Nr. ein
+error.login_failed,
+error.no_user_found_for_given_mail,
+label.additional_info,
+label.adults,Erwachsene
+label.adult_count,Anzahl Erwachsene
+label.age,
+label.all,alle
+label.amount,Menge
+label.are_required_fields,sind Pflichtfelder
+label.article,Artikel
+label.birthyear,
+label.booking,
+label.categories,
+label.children,Kinder
+label.children_count,Anzahl Kinder
+label.close,Schließen
+label.comment,Kommentar
+label.comments,Kommentare
+label.company,Firma
+label.contact_data,Kontaktdaten
+label.country,Land
+label.date,Datum
+label.description,Beschreibung
+label.details,
+label.education,
+label.email,Email
+label.email_forgotten,Email vergessen?
+label.enable_geolocation_tracking,Um ihren Standort bestimmen zu können müssen Sie die Ortungsdienste aktivieren. Laden Sie anschließend die Seite neu
+label.error,Fehler
+label.fax,Fax
+label.firstname,Vorname
+label.first_and_lastname,Vor- und Nachname
+label.fiscal_code,Steuernummer
+label.free,Frei
+label.from,von
+label.fully_booked,
+label.here,here
+label.home,Home
+label.image_gallery,Bildergalerie
+label.info,Info
+label.invoice_address,Rechnungsadresse
+label.invoice_num,
+label.lang,Sprache
+label.lastname,Nachname
+label.legal_indication,Rechtliche Hinweise
+label.location,Ort
+label.location_description,
+label.login,Login
+label.login_success,Erfolgreich angemeldet
+label.logout_success,Erfolgreich abgemeldet
+label.maintenance_text,"Aus Wartungsgründen ist die Seite momentan nicht erreichbar.
+Bitte versuchen Sie es in Kürze nochmal."
+label.maintenance_title,"Seite ist momentan
+nicht verfügbar"
+label.man,Herr
+label.mandatory,Pflichtfelder
+label.message,Allgemeine Bemerkungen
+label.more_about,mehr dazu
+label.more_images,weitere Bilder
+label.my_account,
+label.name,
+label.newsletter,Newsletter
+label.next_slide,nächstes Slide
+label.no,Nein
+label.offer,Angebot
+label.ok,Ok
+label.optional,
+label.order,
+label.order_now,Jetzt bestellen
+label.other_links,Weitere Links
+label.overview,
+label.page,Seite
+label.participant,
+label.password,Passwort
+label.password_forgotten,Passwort vergessen?
+label.payment_method,
+label.period,Zeitraum
+label.person,
+label.personal_data,
+label.persons,Personen
+label.phone,Telefon
+label.phone_short,Tel.
+label.place,Platz
+label.postal,PLZ
+label.prev_slide,vorheriges Slide
+label.price,Preis
+label.privacy,Datenschutz
+label.privacy_policy,Datenschutzbestimmungen
+label.product,Produkt
+label.products,Produkte
+label.published_on,Veröffentlicht am
+label.pwd_reset_done,
+label.registration,Registrierung
+label.request,Anfrage
+label.residence,
+label.room_count,Anzahl Zimmer
+label.salutation,Anrede
+label.search,Suche
+label.search_result,Suchergebnis
+label.shipping,Shipping
+label.shipping_address,Versandadresse
+label.single_price,
+label.siteinfo,
+label.starting_at_short,ab
+label.start_page,
+label.status,
+label.street,Straße
+label.subject,Betreff
+label.submit,Absenden
+label.submit_success,
+label.subtotal,
+label.tags,
+label.target_group,
+label.tax_included,
+label.this_article_is_offline,Dieser Artikel ist offline und für normale User nicht erreichbar! {{be-link}}Ändern{{be-link}}
+label.this_lang_is_offline,Diese Sprache ist offline und für normale User nicht erreichbar!
+label.this_object_is_offline,Dieses Objekt ist offline und für normale User nicht erreichbar! {{be-obj-link}}Ändern{{be-obj-link}}
+label.time_of_day,
+label.to,bis
+label.tos,Allgemeine Geschäftsbedingungen
+label.tos_short,AGBs
+label.total,
+label.total_sum,
+label.units,
+label.username,Benutzername
+label.vat_short,MwSt. Nr.
+label.video,Video
+label.visit_on_facebook,Besuchen Sie uns auf Facebook
+label.warning,Warnung
+label.website,Webseite
+label.weekday,
+label.wished_arrival,Gewünschte Anreise
+label.wished_departure,Gewünschte Abreise
+label.wished_room,Gewünschtes Zimmer
+label.woman,
+label.women,Frau
+label.yes,Ja
+privacy.accept_agbs,
+privacy.accept_cop,
+privacy.accept_tos,"Ja, ich akzeptiere die {{privacy-link}}Datenschutz Erklärung{{privacy-link}}. Wir geben Ihre Daten nicht an Dritte weiter."
