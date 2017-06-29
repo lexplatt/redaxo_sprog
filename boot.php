@@ -102,7 +102,9 @@ function sprogloadCSV($file)
     fclose($handle);
 
     // find langs
-    foreach (\rex_clang::getAll() as $lang) {
+    $langs = \rex_clang::getAll();
+    ksort($langs);
+    foreach ($langs as $lang) {
         if ($lang->getCode() == $_values[0][$index] || strtolower($lang->getName()) == strtolower($_values[0][$index]) || $lang->getId() == $_values[0][$index]) {
             $langs[$index] = $lang->getId();
         }
