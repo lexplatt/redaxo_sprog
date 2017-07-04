@@ -124,19 +124,17 @@ function sprogloadCSV($file)
 
 function saveToLocalCSV($wildcard, $replaces)
 {
-    $langs = rex_clang::getAll();
-
-    foreach ($langs as $lang) {
-        $value = $replaces[$lang->getId()];
-
-        if (strlen(trim($value))) {
+    foreach ($replaces as $lang_id => $replace) {
+        if (strlen(trim($replace))) {
+            $lang   = rex_clang::get($lang_id);
             $values = sprogloadTranslationCSV($lang);
-            $out    = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w+');
 
-            $values[$wildcard] = $value;
+            $values[$wildcard][$lang_id] = $replace;
 
-            foreach ($values as $wildcard => $replace) {
-                fputcsv($out, [$wildcard, $replace]);
+            $out = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w');
+
+            foreach ($values as $_wildcard => $_replace) {
+                fputcsv($out, [$_wildcard, $_replace[$lang_id]]);
             }
             fclose($out);
         }

@@ -184,3 +184,9 @@ label.yes,
 privacy.accept_agbs,
 privacy.accept_cop,
 privacy.accept_tos,
+label.newsletter_unsubscribe_text,"Se non desideri più di ricevere la nostra newsletter è possibile disdire in qualsiasi momento, basta cliccare"
+action.choose,Choose
+action.choose_file,"Select file"
+label.newsletter_displayed_incorrect,"Se questa newsletter non viene visualizzata correttamente, cliccate"
+label.when,When
+label.where,Where

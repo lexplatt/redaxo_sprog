@@ -219,3 +219,8 @@ label.letter_of_application,Bewerbungsschreiben
 label.notes,Notizen
 label.others,Andere
 label.remarks,Bemerkungen
+action.choose,Auswählen
+label.newsletter_displayed_incorrect,"Sollte diese Newsletter nicht korrekt dargestellt werden, dann klicken Sie bitte"
+label.newsletter_unsubscribe_text,"Sie möchten unseren Newsletter in Zukunft nicht mehr erhalten? Sie können ihn jederzeit abbestellen, klicken Sie einfach"
+label.when,Wann
+label.where,Wo

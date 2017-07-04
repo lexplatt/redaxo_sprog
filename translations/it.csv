@@ -187,8 +187,9 @@ label.yes,Si
 privacy.accept_agbs,"Ich akzeptiere die {{agb-link}}Allgemeinen Geschäftsbedingungen{{agb-link}}."
 privacy.accept_cop,"Ich akzeptiere die {{cop-link}}Teilnahmebedingungen{{cop-link}}."
 privacy.accept_tos,"Acconsento al {{privacy-link}}trattamento dei miei dati personali Privacy{{privacy-link}}."
-action.choose,Array
-label.where,Array
-label.when,Array
-label.newsletter_displayed_incorrect,Array
+action.choose,Selezionare
+label.where,Dove
+label.when,Quando
+label.newsletter_displayed_incorrect,"Se questa newsletter non viene visualizzata correttamente, cliccate"
 label.newsletter_unsubscribe_text,"Se non desideri più di ricevere la nostra newsletter è possibile disdire in qualsiasi momento, basta cliccare"
+action.choose_file,"Selezionare file"
