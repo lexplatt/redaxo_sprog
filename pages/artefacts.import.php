@@ -123,7 +123,7 @@ if ($func == 'update') {
     
     if (count($csv_values)) {
         foreach ($csv_values as $lang_id => $values) {
-            updateLocalCSV(\rex_clang::get($lang_id), $values);
+            updateLocalCSV(\rex_clang::get($lang_id), $values, $force_ow);
         }
     }
 

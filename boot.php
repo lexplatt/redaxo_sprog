@@ -89,7 +89,6 @@ function sprogloadTranslationCSV(rex_clang $lang, $values = [])
 function sprogloadCSV($file)
 {
     $index     = 1;
-    $langs     = [];
     $values    = [];
     $_values   = [];
     $_temp     = array_map('str_getcsv', file($file));
@@ -144,14 +143,14 @@ function saveToLocalCSV($wildcard, $replaces)
     }
 }
 
-function updateLocalCSV(rex_clang $lang, $values)
+function updateLocalCSV(rex_clang $lang, $values, $force_ow = true)
 {
     $lang_id = $lang->getId();
     $_values = sprogloadTranslationCSV($lang);
     $out     = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w+');
 
     foreach ($_values as $wildcard => $value) {
-        if (!isset($values[$wildcard])) {
+        if (!isset($values[$wildcard]) || !$force_ow) {
             $values[$wildcard] = $value[$lang_id];
         }
     }
