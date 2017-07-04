@@ -26,8 +26,9 @@ if ($func == 'export')
     // get set lang header
     foreach ($clangs as $clang)
     {
-        $csv_head[] = $clang->getValue('name');
+        $csv_head[$clang->getId()] = $clang->getValue('name');
     }
+    ksort($csv_head);
 
     // wildcards
     $query     = "SELECT `wildcard`, `replace`, `clang_id` FROM rex_sprog_wildcard ORDER BY `clang_id`, `wildcard`";
