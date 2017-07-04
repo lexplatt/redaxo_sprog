@@ -130,7 +130,7 @@ function saveToLocalCSV($wildcard, $replaces)
 
         if (strlen(trim($value))) {
             $values = sprogloadTranslationCSV($lang);
-            $out    = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w');
+            $out    = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w+');
 
             $values[$wildcard] = $value;
 
@@ -140,6 +140,24 @@ function saveToLocalCSV($wildcard, $replaces)
             fclose($out);
         }
     }
+}
+
+function updateLocalCSV(rex_clang $lang, $values)
+{
+    $lang_id = $lang->getId();
+    $_values = sprogloadTranslationCSV($lang);
+    $out     = fopen(__DIR__ . "/translations/{$lang->getCode()}.csv", 'w+');
+
+    foreach ($_values as $wildcard => $value) {
+        if (!isset($values[$wildcard])) {
+            $values[$wildcard] = $value[$lang_id];
+        }
+    }
+
+    foreach ($values as $wildcard => $replace) {
+        fputcsv($out, [$wildcard, $replace]);
+    }
+    fclose($out);
 }
 
 /**
