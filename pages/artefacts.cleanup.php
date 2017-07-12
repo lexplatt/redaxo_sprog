@@ -80,7 +80,7 @@ if ($func == 'find')
     {
         // check if unused wilcards are used in foundation email
         $wc_pattern = $open_tag .'[a-z].[a-z][^#]*'. $close_tag;
-        exec("grep -rho -e '{$wc_pattern}' ". \rex_path::src('foundation-email-templates/fragments') ." | uniq", $found_file_usage);
+        exec("grep -rho -e '{$wc_pattern}' ". \rex_path::addonData('foundation-email-templates/fragments') ." | uniq", $found_file_usage);
 
         foreach ($unused_wildcards as $index => $wc)
         {
