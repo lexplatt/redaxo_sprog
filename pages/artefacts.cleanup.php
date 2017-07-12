@@ -78,6 +78,36 @@ if ($func == 'find')
 
     if (count($unused_wildcards))
     {
+        // check if unused wilcards are used in foundation email
+        $wc_pattern = $open_tag .'[a-z].[a-z][^#]*'. $close_tag;
+        exec("grep -rho -e '{$wc_pattern}' ". \rex_path::src('foundation-email-templates/fragments') ." | uniq", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            if (in_array ($open_tag . $wc . $close_tag, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
+        }
+    }
+
+    if (count($unused_wildcards))
+    {
+        // check if unused wilcards are used in foundation email files - find by static method call
+        $wc_pattern = 'Wildcard::get(\W[a-z].[a-z][^)]*';
+        exec("grep -rhoe '{$wc_pattern}' ". \rex_path::addonData('foundation-email-templates/fragments') ." | uniq | sed 's/Wildcard::get(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc)
+        {
+            if (in_array ($wc, $found_file_usage))
+            {
+                unset($unused_wildcards[$index]);
+            }
+        }
+    }
+
+    if (count($unused_wildcards))
+    {
         // check if unused wilcards are used in other wildcards
         foreach ($unused_wildcards as $index => $wc)
         {
