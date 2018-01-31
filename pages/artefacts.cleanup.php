@@ -62,6 +62,37 @@ if ($func == 'find') {
         }
     }
 
+    if (count($unused_wildcards) && \rex_plugin::get('yform', 'email')->isAvailable()) {
+        // check if unused wilcards are used in yform labels
+        $sql       = \rex_sql::factory();
+        $sql_query = '
+                SELECT       
+                    CONCAT_WS("|", m.label, m.columns, m.options) AS subject
+                FROM rex_yform_field AS m
+                WHERE
+                    m.label RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
+                    OR m.columns RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
+                    OR m.options RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
+            ';
+        $sql->setQuery($sql_query);
+
+        if ($sql->getRows() >= 1) {
+            $items = $sql->getArray();
+
+            foreach ($items as $item) {
+                preg_match_all($reg_exp, $item['subject'], $matchesSubject, PREG_SET_ORDER);
+
+                foreach ($matchesSubject as $match) {
+                    $wildcard = str_replace([$open_tag, $close_tag], '', $match[0]);
+
+                    if ($index = array_search($wildcard, $unused_wildcards)) {
+                        unset($unused_wildcards[$index]);
+                    }
+                }
+            }
+        }
+    }
+
     if (count($unused_wildcards)) {
         // check if unused wilcards are used in fragments
         $wc_pattern = $open_tag . '[a-z].[a-z][^#]*' . $close_tag;
