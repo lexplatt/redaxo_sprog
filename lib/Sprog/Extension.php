@@ -15,7 +15,7 @@ class Extension
 {
     public static function replaceWildcards(\rex_extension_point $ep)
     {
-        $ep->setSubject(Wildcard::parse($ep->getSubject(), null, $ep->getParams()));
+        $ep->setSubject(Wildcard::parse($ep->getSubject(), null));
     }
 
     public static function articleUpdated(\rex_extension_point $ep)
@@ -108,7 +108,7 @@ class Extension
     public static function wildcardFormControlElement(\rex_extension_point $ep)
     {
         $subject = $ep->getSubject();
-        unset($subject['delete']);
+        $subject['delete'] = '';
         $ep->setSubject($subject);
     }
 }
