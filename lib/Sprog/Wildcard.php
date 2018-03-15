@@ -62,7 +62,7 @@ class Wildcard
         if ($sql->getRows() == 1 && trim($sql->getValue('replace')) != '') {
             return self::replace($wildcard, $sql->getValue('replace'));
         }
-        return false;
+        return $wildcard;
     }
 
     /**
