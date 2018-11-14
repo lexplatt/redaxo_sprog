@@ -62,7 +62,7 @@ if ($func == 'update') {
             }
 
             // check if wildcard already exists for this lang
-            $sql->setQuery('SELECT * FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE `wildcard` = :wildcard', [':wildcard' => $wildcard]);
+            $sql->setQuery('SELECT * FROM '.\rex::getTable('sprog_wildcard').' WHERE `wildcard` = :wildcard', [':wildcard' => $wildcard]);
             if ($sql->getRows() > 0) {
                 // check if it exists for the given lang_id
                 $rows = $sql->getArray();
@@ -166,11 +166,10 @@ $fragment     = new \rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $panelElements .= $fragment->parse('core/form/checkbox.php');
 
-
 $panelBody = '
     <fieldset>
         <input type="hidden" name="func" value="update" />
-        ' . $panelElements . '
+        '.$panelElements.'
     </fieldset>';
 $fragment  = new \rex_fragment();
 $fragment->setVar('class', 'edit', false);
@@ -178,21 +177,19 @@ $fragment->setVar('title', $this->i18n('import_csv_upload'), false);
 $fragment->setVar('body', $panelBody, false);
 $sections .= $fragment->parse('core/page/section.php');
 
-
 // - - - - - - - - - - - - - - - - - - - - - - Buttons
 
 $formElements = [
-    ['field' => '<button class="btn btn-apply rex-form-aligned" type="submit" name="send" value="1"' . \rex::getAccesskey(\rex_i18n::msg('sprog_upload'), 'apply') . '>' . \rex_i18n::msg('sprog_upload') . '</button>'],
+    ['field' => '<button class="btn btn-apply rex-form-aligned" type="submit" name="send" value="1"'.\rex::getAccesskey(\rex_i18n::msg('sprog_upload'), 'apply').'>'.\rex_i18n::msg('sprog_upload').'</button>'],
 ];
 
 $fragment = new \rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $buttons = $fragment->parse('core/form/submit.php');
 
-
 $fragment = new \rex_fragment();
 $fragment->setVar('class', 'edit', false);
 $fragment->setVar('buttons', $buttons, false);
 $sections .= $fragment->parse('core/page/section.php');
 
-echo '<form action="' . \rex_url::currentBackendPage() . '" method="post" enctype="multipart/form-data">' . $sections . '</form>';
+echo '<form action="'.\rex_url::currentBackendPage().'" method="post" enctype="multipart/form-data">'.$sections.'</form>';

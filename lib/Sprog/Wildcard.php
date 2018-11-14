@@ -26,7 +26,7 @@ class Wildcard
 
     public static function getRegexp($value = '.*?')
     {
-        return '@(?<complete>' . preg_quote(trim(self::getOpenTag())) . '\s*(?<wildcard>' . $value . ')\s*((\|(?<filter>\s*[a-z]+)\(?(?<arguments>.*?)?\)?))?\s*' . preg_quote(trim(self::getCloseTag())) . ')@';
+        return '@(?<complete>'.preg_quote(trim(self::getOpenTag())).'\s*(?<wildcard>'.$value.')\s*((\|(?<filter>\s*[a-z]+)\(?(?<arguments>.*?)?\)?))?\s*'.preg_quote(trim(self::getCloseTag())).')@';
     }
 
     public static function isClangSwitchMode()
@@ -58,7 +58,7 @@ class Wildcard
         }
 
         $sql = \rex_sql::factory();
-        $sql->setQuery('SELECT `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = :clang_id AND `wildcard` = :wildcard', ['clang_id' => $clang_id, 'wildcard' => trim($wildcard)]);
+        $sql->setQuery('SELECT `replace` FROM '.\rex::getTable('sprog_wildcard').' WHERE clang_id = :clang_id AND `wildcard` = :wildcard', ['clang_id' => $clang_id, 'wildcard' => trim($wildcard)]);
         if ($sql->getRows() == 1 && trim($sql->getValue('replace')) != '') {
             return self::replace($wildcard, $sql->getValue('replace'));
         }
@@ -94,7 +94,7 @@ class Wildcard
         }
 
         $sql = \rex_sql::factory();
-        $items = $sql->getArray('SELECT `wildcard`, `replace` FROM ' . \rex::getTable('sprog_wildcard') . ' WHERE clang_id = :clang_id', ['clang_id' => $clang_id]);
+        $items = $sql->getArray('SELECT `wildcard`, `replace` FROM '.\rex::getTable('sprog_wildcard').' WHERE clang_id = :clang_id', ['clang_id' => $clang_id]);
         if (count($items) < 1) {
             return $content;
         }
@@ -126,18 +126,6 @@ class Wildcard
         return str_replace($search, $replace, $content);
     }
 
-    /**
-     * Returns the replaced wildcard.
-     *
-     * @param string $wildcard
-     *
-     * @return string
-     */
-    protected static function replace($wildcard, $replace)
-    {
-        return nl2br($replace);
-    }
-
     public static function getMissingWildcards()
     {
         $wildcards = [];
@@ -156,10 +144,10 @@ class Wildcard
             foreach ($fields as $field => $numbers) {
                 $concatFields = [];
                 foreach ($numbers as $number) {
-                    $concatFields[] = $field . $number;
-                    $searchFields[] = $field . $number . ' RLIKE ' . $sql->escape(preg_quote(trim(self::getOpenTag())) . '.*' . preg_quote(trim(self::getCloseTag())));
+                    $concatFields[] = $field.$number;
+                    $searchFields[] = $field.$number.' RLIKE '.$sql->escape(preg_quote(trim(self::getOpenTag())).'.*'.preg_quote(trim(self::getCloseTag())));
                 }
-                $selectFields[] = 'CONCAT_WS("|", ' . implode(',', $concatFields) . ') AS subject';
+                $selectFields[] = 'CONCAT_WS("|", '.implode(',', $concatFields).') AS subject';
             }
 
             $fields = $searchFields;
@@ -167,12 +155,12 @@ class Wildcard
             $sql_query = ' SELECT       s.article_id AS id,
                                         s.clang_id,
                                         s.ctype_id,
-                                        ' . implode(', ', $selectFields) . '
-                            FROM        ' . \rex::getTable('article_slice') . ' AS s
+                                        '.implode(', ', $selectFields).'
+                            FROM        '.\rex::getTable('article_slice').' AS s
                                 LEFT JOIN
-                                        ' . \rex::getTable('article') . ' AS a
+                                        '.\rex::getTable('article').' AS a
                                     ON  (s.article_id = a.id AND s.clang_id = a.clang_id)
-                            WHERE       ' . implode(' OR ', $fields) . '
+                            WHERE       '.implode(' OR ', $fields).'
                             ';
 
             $sql->setDebug(false);
@@ -206,7 +194,7 @@ class Wildcard
                 $sql->setDebug(false);
                 $sql->setQuery('
                     SELECT  wildcard
-                    FROM    ' . \rex::getTable('sprog_wildcard') . '
+                    FROM    '.\rex::getTable('sprog_wildcard').'
                     WHERE   clang_id = :clang_id',
                     ['clang_id' => \rex_clang::getStartId()]
                 );
@@ -325,8 +313,8 @@ class Wildcard
                    <thead>
                        <tr>
                            <th class="rex-table-icon"></th>
-                           <th>' . \rex_addon::get('sprog')->i18n('wildcard') . '</th>
-                           <th class="rex-table-action" colspan="2">' . \rex_addon::get('sprog')->i18n('function') . '</th>
+                           <th>'.\rex_addon::get('sprog')->i18n('wildcard').'</th>
+                           <th class="rex-table-action" colspan="2">'.\rex_addon::get('sprog')->i18n('function').'</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -336,9 +324,9 @@ class Wildcard
                 $content .= '
                            <tr>
                                <td class="rex-table-icon"><i class="rex-icon rex-icon-refresh"></i></td>
-                               <td data-title="' . \rex_addon::get('sprog')->i18n('wildcard') . '">' . $name . '</td>
-                               <td class="rex-table-action"><a href="' . \rex_url::currentBackendPage(['func' => 'add', 'wildcard_name' => $params['wildcard']]) . '"><i class="rex-icon rex-icon-edit"></i> ' . \rex_addon::get('sprog')->i18n('function_add') . '</a></td>
-                               <td class="rex-table-action"><a href="' . $params['url'] . '"><i class="rex-icon rex-icon-article"></i> ' . \rex_addon::get('sprog')->i18n('wildcard_go_to_the_article') . '</a></td>
+                               <td data-title="'.\rex_addon::get('sprog')->i18n('wildcard').'">'.$name.'</td>
+                               <td class="rex-table-action"><a href="'.\rex_url::currentBackendPage(['func' => 'add', 'wildcard_name' => $params['wildcard']]).'"><i class="rex-icon rex-icon-edit"></i> '.\rex_addon::get('sprog')->i18n('function_add').'</a></td>
+                               <td class="rex-table-action"><a href="'.$params['url'].'"><i class="rex-icon rex-icon-article"></i> '.\rex_addon::get('sprog')->i18n('wildcard_go_to_the_article').'</a></td>
                            </tr>';
             }
 
@@ -353,5 +341,17 @@ class Wildcard
 
             return $content;
         }
+    }
+
+    /**
+     * Returns the replaced wildcard.
+     *
+     * @param string $wildcard
+     *
+     * @return string
+     */
+    protected static function replace($wildcard, $replace)
+    {
+        return nl2br($replace);
     }
 }
