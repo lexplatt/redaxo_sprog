@@ -12,6 +12,9 @@
 
 use Sprog\Wildcard;
 
+// kreatif: deepl added
+$hasDeepl = rex_addon::get('deepl')->isAvailable();
+
 $csrfToken = rex_csrf_token::factory('sprog-clang-all');
 
 $content = '';
@@ -154,7 +157,7 @@ $content .= '
                     <th class="rex-table-id">'.$this->i18n('id').'</th>
                     <th class="rex-table-minwidth-6">'.$this->i18n('wildcard').'</th>
                     '.$th.'
-                    <th class="rex-table-action" colspan="2">'.$this->i18n('function').'</th>
+                    <th class="rex-table-action" colspan="'. ($hasDeepl ? 3 : 2) .'">'.$this->i18n('function').'</th>
                 </tr>
             </thead>
             <tbody>
@@ -234,6 +237,13 @@ if (count($entries)) {
             foreach ($entry as $lang_name => $replace) {
                 $clang_id = (int) trim($lang_name, 'id');
                 $td .= '<td data-title="'.rex_clang::get($clang_id)->getName().'">'.htmlspecialchars($replace).'</td>';
+            }
+            if ($func != 'add' && $hasDeepl) {
+                $dplData = [
+                    'controller' => 'Deepl.translateSprog',
+                    'data_id'    => $entry_id,
+                ];
+                $td .= '<td><a href="javascript:;" onclick="Deepl.showOverlay(this, ' . rex_escape(json_encode($dplData), 'html_attr') . ');" title="' . \rex_i18n::msg('translate_dataset') . '" class="btn btn-xs btn-primary"><i class="rex-icon dpli-icon"></i></a></td>';
             }
 
             $class = (rex_request('wildcard_id', 'int') == $entry_id) ? ' class="mark"' : '';
