@@ -67,13 +67,15 @@ if ($func == 'find') {
         $sql       = \rex_sql::factory();
         $sql_query = '
                 SELECT       
-                    CONCAT_WS("|", m.label, m.columns, m.options, m.choices) AS subject
+                    CONCAT_WS("|", m.label, m.columns, m.message, m.options, m.choices, m.notice) AS subject
                 FROM rex_yform_field AS m
                 WHERE
                     m.label RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
                     OR m.columns RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
+                    OR m.message RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
                     OR m.options RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
                     OR m.choices RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
+                    OR m.notice RLIKE ' . $sql->escape(preg_quote(trim($open_tag)) . '.*' . preg_quote(trim($close_tag))) . '
             ';
         $sql->setQuery($sql_query);
 
