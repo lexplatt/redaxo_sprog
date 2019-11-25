@@ -105,8 +105,8 @@ function sprogloadCSV($file)
     foreach ($langs as $lang) {
         if ($lang->getCode() == $_values[0][$index] || strtolower($lang->getName()) == strtolower($_values[0][$index]) || $lang->getId() == $_values[0][$index]) {
             $langs[$index] = $lang->getId();
+            $index++;
         }
-        $index++;
     }
     unset($_values[0]);
 
