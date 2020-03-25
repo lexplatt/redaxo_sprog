@@ -148,4 +148,76 @@ class Sync
     {
         self::articleMetainfo($params, $fields);
     }
+
+
+    public static function ensureAddonWildcards(\rex_addon $addon)
+    {
+        $sql   = \rex_sql::factory();
+        $isql  = \rex_sql::factory();
+        $langs = \rex_clang::getAll(false);
+
+        foreach ($langs as $lang) {
+            $langId   = $lang->getId();
+            $filepath = $addon->getPath("install/lang/{$lang->getCode()}.csv");
+
+            if (file_exists($filepath)) {
+                if (($handle = fopen($filepath, "r")) !== false) {
+                    while (($row = fgetcsv($handle, 0, ";")) !== false) {
+                        $item = current($sql->getArray('SELECT pid, `replace` FROM rex_sprog_wildcard WHERE `wildcard` = :wc AND `clang_id` = :cid', [
+                            'wc'  => $row[0],
+                            'cid' => $langId,
+                        ]));
+
+                        if (!$item || trim($item['replace']) == '') {
+                            $isql->setTable('rex_sprog_wildcard');
+                            $isql->setValue('updatedate', date('Y-m-d H:i:s'));
+                            $isql->setValue('updateuser', 'sprog-sync');
+                            $isql->setValue('clang_id', $langId);
+                            $isql->setValue('wildcard', $row[0]);
+                            $isql->setValue('replace', $row[1]);
+
+                            try {
+                                if ($item) {
+                                    $isql->setWhere('pid = :pid', ['pid' => $item['pid']]);
+                                    $isql->update();
+                                } else {
+                                    $isql->setValue('createuser', 'sprog-sync');
+                                    $isql->setValue('createdate', date('Y-m-d H:i:s'));
+                                    $item = current($sql->getArray('SELECT id FROM rex_sprog_wildcard WHERE `wildcard` = :wc', [
+                                        'wc' => $row[0],
+                                    ]));
+
+                                    if ($item) {
+                                        $isql->setValue('id', $item['id']);
+                                    } else {
+                                        $_id = current($sql->getArray('SELECT (MAX(id) + 1) AS id FROM rex_sprog_wildcard'));
+                                        $isql->setRawValue('id', $_id['id']);
+
+                                        foreach ($langs as $_lang) {
+                                            $_langId = $_lang->getId();
+                                            $_isql   = clone $isql;
+
+                                            if ($_langId != $langId) {
+                                                $_isql->setValue('replace', '');
+                                                $_isql->setValue('clang_id', $_langId);
+                                                $_isql->insert();
+                                            }
+                                        }
+                                    }
+                                    $isql->insert();
+                                }
+                                if ($isql->hasError()) {
+                                    throw new \rex_sql_exception($isql->getError(), null, $isql);
+                                }
+                            } catch (\rex_sql_exception $ex) {
+                                pr($ex->getMessage(), 'red');
+                                exit;
+                            }
+                        }
+                    }
+                    fclose($handle);
+                }
+            }
+        }
+    }
 }

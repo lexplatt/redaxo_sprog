@@ -49,12 +49,12 @@ if ($func == 'export')
 
     $out = fopen('php://output', 'w');
 
-    fputcsv($out, $csv_head);
+    fputcsv($out, $csv_head, ';');
 
     foreach ($csv_body as $wildcard => $v)
     {
         array_unshift($v, $wildcard);
-        fputcsv($out, $v);
+        fputcsv($out, $v, ';');
     }
     fclose($out);
     exit;
