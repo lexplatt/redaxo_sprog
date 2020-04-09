@@ -163,6 +163,10 @@ class Sync
             if (file_exists($filepath)) {
                 if (($handle = fopen($filepath, "r")) !== false) {
                     while (($row = fgetcsv($handle, 0, ";")) !== false) {
+                        if (trim($row[0]) == '') {
+                            continue;
+                        }
+
                         $item = current($sql->getArray('SELECT pid, `replace` FROM rex_sprog_wildcard WHERE `wildcard` = :wc AND `clang_id` = :cid', [
                             'wc'  => $row[0],
                             'cid' => $langId,
@@ -173,7 +177,7 @@ class Sync
                             $isql->setValue('updatedate', date('Y-m-d H:i:s'));
                             $isql->setValue('updateuser', 'sprog-sync');
                             $isql->setValue('clang_id', $langId);
-                            $isql->setValue('wildcard', $row[0]);
+                            $isql->setValue('wildcard', trim($row[0]));
                             $isql->setValue('replace', $row[1]);
 
                             try {
