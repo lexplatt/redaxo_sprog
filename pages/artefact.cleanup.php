@@ -161,7 +161,7 @@ if ($func == 'find') {
         foreach ($unused_wildcards as $index => $wc) {
             $sql = \rex_sql::factory();
             $sql->setQuery("SELECT wildcard FROM rex_sprog_wildcard WHERE `replace` LIKE :w1", [':w1' => "%{$open_tag}{$wc}{$close_tag}%"]);
-            $found_wc_usage = $sql->getRow();
+            $found_wc_usage = $sql->getRows();
 
             if ($found_wc_usage) {
                 unset($unused_wildcards[$index]);
