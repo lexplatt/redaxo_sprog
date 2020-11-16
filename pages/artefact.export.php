@@ -28,24 +28,23 @@ if ($func == 'export' && !$csrfToken->isValid()) {
 
     $rows = [];
     $data = [];
-    $clang_ids = [];
+    $clangs = rex_clang::getAll();
     foreach ($items as $index => $item) {
         $data[$item['wildcard']][$item['clang_id']] = str_replace("\r", '', $item['replace']);
-        $clang_ids[$item['clang_id']] = '';
     }
 
     ksort($data);
 
     $header = ['wildcard'];
-    foreach ($clang_ids as $clang_id => $value) {
-        $header[] = rex_clang::get($clang_id)->getCode();
+    foreach ($clangs as $clang) {
+        $header[] = $clang->getCode();
     }
 
     $records = [];
-    foreach ($data as $wildcard => $clangs) {
+    foreach ($data as $wildcard => $items) {
         $record = [$wildcard];
-        foreach ($clangs as $clang_id => $replace) {
-            $record[] = $replace;
+        foreach ($clangs as $clang) {
+            $record[] = $items[$clang->getId()] ?: '';
         }
         $records[] = $record;
     }
