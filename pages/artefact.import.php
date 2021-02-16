@@ -84,7 +84,7 @@ if ($func == 'import-csv' && !$csrfToken->isValid()) {
     foreach ($records as $offset => $record) {
         $wildcard = $record['wildcard'];
         unset($record['wildcard']);
-
+        $id = null;
         foreach ($record as $clangCode => $replace) {
             $clangCode = strtolower(trim($clangCode));
 
@@ -103,7 +103,13 @@ if ($func == 'import-csv' && !$csrfToken->isValid()) {
                 $sql->update();
                 $countUpdates++;
             } else {
-                $sql->addGlobalCreateFields();
+                if (!isset($id)) {
+                    $id = $sql->setNewId('id');
+                } else {
+                    $sql->setValue('id', $id);
+                }
+                $sql->setValue('wildcard', $wildcard);
+                $sql->setValue('clang_id', $clangId);
                 $sql->insert();
                 $countInserts++;
             }
