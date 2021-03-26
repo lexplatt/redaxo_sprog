@@ -11,6 +11,9 @@
 
 namespace Sprog;
 
+use Whoops\Exception\ErrorException;
+
+
 class Sync
 {
     public static function articleNameToCategoryName($params)
@@ -150,15 +153,19 @@ class Sync
     }
 
 
-    public static function ensureAddonWildcards(\rex_addon $addon)
+    public static function ensureAddonWildcards($addonOrPlugin)
     {
+        if (!($addonOrPlugin instanceof \rex_addon || $addonOrPlugin instanceof \rex_plugin)) {
+            throw new ErrorException('Parameter must be instance of rex_addon or rex_plugin');
+        }
+
         $sql   = \rex_sql::factory();
         $isql  = \rex_sql::factory();
         $langs = \rex_clang::getAll(false);
 
         foreach ($langs as $lang) {
             $langId   = $lang->getId();
-            $filepath = $addon->getPath("install/lang/{$lang->getCode()}.csv");
+            $filepath = $addonOrPlugin->getPath("install/lang/{$lang->getCode()}.csv");
 
             if (file_exists($filepath)) {
                 if (($handle = fopen($filepath, "r")) !== false) {
