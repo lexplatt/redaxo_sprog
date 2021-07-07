@@ -62,7 +62,7 @@ if ($func == 'find') {
         }
     }
 
-    if (count($unused_wildcards) && \rex_plugin::get('yform', 'email')->isAvailable()) {
+    if (count($unused_wildcards) && \rex_plugin::get('yform', 'manager')->isAvailable()) {
         // check if unused wilcards are used in yform labels
         $sql       = \rex_sql::factory();
         $sql_query = '
@@ -103,6 +103,30 @@ if ($func == 'find') {
 
         foreach ($unused_wildcards as $index => $wc) {
             if (in_array($open_tag . $wc . $close_tag, $found_file_usage)) {
+                unset($unused_wildcards[$index]);
+            }
+        }
+    }
+
+    if (count($unused_wildcards)) {
+        // check if unused wilcards are used in notifications
+        $wc_pattern = 'Message(\W[a-z].[a-z][^),]*';
+        exec("grep -rhoe '{$wc_pattern}' " . \rex_path::src('addons') . " | uniq | sed 's/Message(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
+
+        foreach ($unused_wildcards as $index => $wc) {
+            if (in_array($wc, $found_file_usage)) {
+                unset($unused_wildcards[$index]);
+            }
+        }
+    }
+
+    if (count($unused_wildcards)) {
+        // check if unused wilcards are used in developer files - find by static method call
+        $wc_pattern = 'Message(\W[a-z].[a-z][^),]*';
+        exec("grep -rhoe '{$wc_pattern}' " . \rex_path::addonData('developer') . " | uniq | sed 'sMessage(\W//' | sed \"s/[']//\" | sed 's/[\"]//'", $found_file_usage);
+        foreach ($unused_wildcards as $index => $wc) {
+            if (in_array($wc, $found_file_usage)) {
+
                 unset($unused_wildcards[$index]);
             }
         }
